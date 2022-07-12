@@ -49,6 +49,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         ivSelectL = findViewById(R.id.main_iv_select_left)
         ivSelectR = findViewById(R.id.main_iv_select_right)
         ivCart = findViewById(R.id.main_iv_cart)
+
+        tvStart.setOnClickListener(this)
     }
 
     private fun modeAdding() {
@@ -76,11 +78,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun gameIntent() {
         val intent = Intent()
         intent.setClass(this@MainActivity, GameActivity::class.java)
+        intent.putExtra("mode", modeDataList.get(position).title.key)
+        startActivity(intent)
     }
+
+//    private fun
 
     override fun onClick(p0: View?) {
         when (p0) {
-            tvStart -> print("happy")
+            tvStart -> gameIntent()
 
         }
     }
