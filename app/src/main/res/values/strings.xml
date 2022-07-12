@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Game</string>
+    <string name="title">2048</string>
+    <string name="score">得分</string>
+    <string name="total_score">高分</string>
+    <string name="zero">0</string>
+    <string name="start">開始遊戲</string>
+    <string name="rank">排行榜</string>
+    <string name="three">3x3</string>
+    <string name="four">4x4</string>
+    <string name="five">5x5</string>
+    <string name="six">6x6</string>
+    <string name="eight">8x8</string>
+    <string name="yes">是</string>
+    <string name="no">不是</string>
+    <string name="no_ad">想刪除廣告嗎?</string>
+</resources>

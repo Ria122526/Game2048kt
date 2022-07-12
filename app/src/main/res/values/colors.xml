@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="my_red">#CB1B45</color>
+    <color name="title_tx_787469">#787469</color>
+    <color name="bg_FCF8EF">#FCF8EF</color>
+    <color name="cart_bg_F48361">#F48361</color>
+    <color name="rank_bg_907A65">#907A65</color>
+    <color name="end_bg_F7C242">#F7C242</color>
+    <color name="cards_bg_BBADA0">#BBADA0</color>
+    <color name="cards_inform_D4C6BD">#D4C6BD</color>
+    <color name="cards_empty_D6CDC4">#D6CDC4</color>
+    <color name="cards_number2_EFE5DB">#EFE5DB</color>
+    <color name="cards_number4_EDE1C9">#EDE1C9</color>
+    <color name="cards_number8_F4B17A">#F4B17A</color>
+    <color name="cards_number16_F69463">#F69463</color>
+    <color name="cards_number32_F57C5F">#F57C5F</color>
+    <color name="cards_number64_F75E3E">#F75E3E</color>
+    <color name="cards_number128_EECF72">#EECF72</color>
+    <color name="cards_number256_ECC850">#ECC850</color>
+    <color name="cards_numberDefault_EDC53F">#EDC53F</color>
+    <color name="grey9D">#9D9D9D9D</color>
+    <color name="cart_dialog_33A6B8">#33A6B8</color>
+    <color name="tran">#00000000</color>
+    <color name="black_tran">#99000000</color>
+
+
+</resources>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="RankDialogCustom">
+        <!-- 對話框背景：半黑 -->
+        <item name="android:background">@color/black_tran</item>
+    </style>
+
+    <style name="DialogCustomOutAni">
+        <!-- 離開對話框動畫 -->
+        <item name="android:windowExitAnimation">@anim/dialog_out</item>
+    </style>
+
+    <style name="DialogCustomInAni">
+        <!-- 進入對話框動畫 -->
+        <item name="android:windowEnterAnimation">@anim/dialog_in</item>
+    </style>
+</resources>
