@@ -1,14 +1,13 @@
-package com.example.game2048kt
+package com.example.game2048kt.main
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.test.data.ModeTitleImgData
-import com.example.test.data.TheModeEnum
+import com.example.game2048kt.R
+import com.example.game2048kt.TheModeEnum
+import com.example.game2048kt.game.GameActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,7 +19,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var ivSelectR: ImageView
     private lateinit var ivCart: ImageView
 
-    var modeDataList = ArrayList<ModeTitleImgData>()
+    var modeDataList = ArrayList<MainModeData>()
     var position = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,11 +82,11 @@ class MainActivity : AppCompatActivity() {
     // 將模式加入集合中 (嘗試使用新學到的apply)
     private fun modeAdd() {
         modeDataList.apply {
-            add(ModeTitleImgData(TheModeEnum.THREE_THREE, R.mipmap.logo_3))
-            add(ModeTitleImgData(TheModeEnum.FOUR_FOUR, R.mipmap.logo_4))
-            add(ModeTitleImgData(TheModeEnum.FIVE_FIVE, R.mipmap.logo_5))
-            add(ModeTitleImgData(TheModeEnum.SIX_SIX, R.mipmap.logo_6))
-            add(ModeTitleImgData(TheModeEnum.EIGHT_EIGHT, R.mipmap.logo_8))
+            add(MainModeData(TheModeEnum.THREE_THREE, R.mipmap.logo_3))
+            add(MainModeData(TheModeEnum.FOUR_FOUR, R.mipmap.logo_4))
+            add(MainModeData(TheModeEnum.FIVE_FIVE, R.mipmap.logo_5))
+            add(MainModeData(TheModeEnum.SIX_SIX, R.mipmap.logo_6))
+            add(MainModeData(TheModeEnum.EIGHT_EIGHT, R.mipmap.logo_8))
         }
     }
 

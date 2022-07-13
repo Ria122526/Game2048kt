@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/bg_FCF8EF"
     android:padding="10dp"
-    tools:context=".MainActivity">
+    tools:context=".main.MainActivity">
 
     <androidx.constraintlayout.utils.widget.ImageFilterView
         android:id="@+id/main_iv_cart"

@@ -1,4 +1,6 @@
-package com.example.test.data
+package com.example.game2048kt.game
+
+import com.example.game2048kt.rank.RankIdScoreData
 
 // 紀錄遊戲中需要被儲存的資料
 class GameSaveData {

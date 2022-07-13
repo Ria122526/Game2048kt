@@ -1,4 +1,4 @@
-package com.example.test.data
+package com.example.game2048kt.game
 
 // 紀錄遊戲中不需要儲存的資料
 class GameData {

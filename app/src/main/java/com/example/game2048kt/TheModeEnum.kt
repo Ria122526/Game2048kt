@@ -1,4 +1,4 @@
-package com.example.test.data
+package com.example.game2048kt
 
 // 常被用到的模式資源
 enum class TheModeEnum(key: String) {
