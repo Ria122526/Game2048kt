@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.test.data.ModeTitleImgData
 import com.example.test.data.TheModeEnum
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var tvStart: TextView
     private lateinit var tvRank: TextView
@@ -26,17 +26,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        // 取得結束時存入的position
         position = getSharedPreferences("Main", MODE_PRIVATE).getInt("mode", 0)
 
         initViews()
-        modeAdding()
-        // 第一次載入時透過position設定
+        modeAdd()
         changMode()
+        clicking()
     }
 
     override fun onStop() {
-        var sharedPreferences: SharedPreferences = getSharedPreferences("Main", MODE_PRIVATE)
+        var sharedPreferences = getSharedPreferences("Main", MODE_PRIVATE)
         sharedPreferences.edit().putInt("mode", position).apply()
         super.onStop()
     }
@@ -49,18 +49,49 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         ivSelectL = findViewById(R.id.main_iv_select_left)
         ivSelectR = findViewById(R.id.main_iv_select_right)
         ivCart = findViewById(R.id.main_iv_cart)
-
-        tvStart.setOnClickListener(this)
     }
 
-    private fun modeAdding() {
-        modeDataList.add(ModeTitleImgData(TheModeEnum.THREE_THREE, R.mipmap.logo_3))
-        modeDataList.add(ModeTitleImgData(TheModeEnum.FOUR_FOUR, R.mipmap.logo_4))
-        modeDataList.add(ModeTitleImgData(TheModeEnum.FIVE_FIVE, R.mipmap.logo_5))
-        modeDataList.add(ModeTitleImgData(TheModeEnum.SIX_SIX, R.mipmap.logo_6))
-        modeDataList.add(ModeTitleImgData(TheModeEnum.EIGHT_EIGHT, R.mipmap.logo_8))
+    // 點擊事件的設置
+    private fun clicking() {
+        // 開始遊戲
+        tvStart.setOnClickListener {
+            val intent = Intent()
+            intent.setClass(this@MainActivity, GameActivity::class.java)
+            intent.putExtra("mode", modeDataList.get(position).title.key)
+            startActivity(intent)
+        }
+        // 排行榜
+        tvRank.setOnClickListener {
+            // 這裡要設置Dialog
+        }
+        // 選單往左
+        ivSelectL.setOnClickListener {
+            position--
+            changMode()
+        }
+        // 選單往右
+        ivSelectR.setOnClickListener {
+            position++
+            changMode()
+        }
+        // 購物車
+        ivCart.setOnClickListener {
+            // 這裡要設置Dialog
+        }
     }
 
+    // 將模式加入集合中 (嘗試使用新學到的apply)
+    private fun modeAdd() {
+        modeDataList.apply {
+            add(ModeTitleImgData(TheModeEnum.THREE_THREE, R.mipmap.logo_3))
+            add(ModeTitleImgData(TheModeEnum.FOUR_FOUR, R.mipmap.logo_4))
+            add(ModeTitleImgData(TheModeEnum.FIVE_FIVE, R.mipmap.logo_5))
+            add(ModeTitleImgData(TheModeEnum.SIX_SIX, R.mipmap.logo_6))
+            add(ModeTitleImgData(TheModeEnum.EIGHT_EIGHT, R.mipmap.logo_8))
+        }
+    }
+
+    // 模式變換的設置
     private fun changMode() {
         if (position < 0) {
             position = 4
@@ -68,26 +99,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             position = 0
         }
 
-        val modeTitleImgData: ModeTitleImgData = modeDataList.get(position)
+        val modeTitleImgData = modeDataList[position]
 
-        tvSize.setText(modeTitleImgData.title.key)
+        tvSize.text = modeTitleImgData.title.key
         ivGameTitle.setBackgroundResource(modeTitleImgData.imgResource)
 
-    }
-
-    private fun gameIntent() {
-        val intent = Intent()
-        intent.setClass(this@MainActivity, GameActivity::class.java)
-        intent.putExtra("mode", modeDataList.get(position).title.key)
-        startActivity(intent)
-    }
-
-//    private fun
-
-    override fun onClick(p0: View?) {
-        when (p0) {
-            tvStart -> gameIntent()
-
-        }
     }
 }

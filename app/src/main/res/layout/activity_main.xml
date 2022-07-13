@@ -11,8 +11,8 @@
 
     <androidx.constraintlayout.utils.widget.ImageFilterView
         android:id="@+id/main_iv_cart"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:background="@drawable/ic_baseline_shopping_basket_24"
         app:round="10dp"
         app:layout_constraintEnd_toEndOf="parent"
