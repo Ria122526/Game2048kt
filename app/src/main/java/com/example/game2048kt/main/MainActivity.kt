@@ -56,8 +56,10 @@ class MainActivity : AppCompatActivity() {
         tvStart.setOnClickListener {
             val intent = Intent()
             intent.setClass(this@MainActivity, GameActivity::class.java)
-            intent.putExtra("mode", modeDataList.get(position).title.key)
+            intent.putExtra("mode", modeDataList[position].title.key)
             startActivity(intent)
+
+            println("MAIN: " + modeDataList[position].title.key)
         }
         // 排行榜
         tvRank.setOnClickListener {

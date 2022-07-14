@@ -14,5 +14,8 @@ class GameSaveData {
     var highScore: Int = 0;
 
     // 遊戲畫面資料，以座標表示該位置的值
-    var coorsArr = Array(0) { Array(0) { 0 } }
+    var coorsArr: IntArray? = null
+
+    // 上一步資料
+    var moveArr: IntArray? = null
 }

@@ -14,9 +14,9 @@
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:background="@drawable/ic_baseline_shopping_basket_24"
-        app:round="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:round="10dp" />
 
     <ImageView
         android:id="@+id/main_iv_game"
@@ -42,6 +42,7 @@
         android:id="@+id/main_tv_size"
         android:layout_width="0dp"
         android:layout_height="50dp"
+        android:background="@color/bg_FCF8EF"
         android:gravity="center"
         android:textColor="@color/black"
         android:textSize="30sp"
