@@ -19,8 +19,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var ivSelectR: ImageView
     private lateinit var ivCart: ImageView
 
-    var modeDataList = ArrayList<MainModeData>()
-    var position = 0
+    private var modeDataList = ArrayList<MainModeData>()
+    private var position = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
