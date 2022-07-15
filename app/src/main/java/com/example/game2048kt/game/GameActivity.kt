@@ -6,10 +6,13 @@ import android.view.View
 import android.view.animation.Animation
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.room.Database
+import androidx.room.Room
 import com.example.game2048kt.R
 import com.example.game2048kt.TheModeEnum
 import com.example.game2048kt.TheModeEnum.Companion.getEnum
 import com.example.game2048kt.rank.RankIdScoreData
+import com.example.game2048kt.roomDataBase.DataBase
 
 private const val MAR = 10
 private const val THREE = 3
@@ -65,6 +68,14 @@ class GameActivity : AppCompatActivity() {
         modeSetting()
         arraySizeSetting()
         initView()
+        initClicks()
+
+        val db = Room.databaseBuilder(
+            applicationContext,
+            DataBase::class.java, "database-name"
+        ).build()
+
+        db.userDao().
 
     }
 
@@ -77,12 +88,7 @@ class GameActivity : AppCompatActivity() {
         ivRestart = findViewById(R.id.game_iv_restart)
     }
 
-    override fun onResume() {
-        super.onResume()
-        initClicks()
-    }
-
-    private fun initClicks(){
+    private fun initClicks() {
         ivRestart.setOnClickListener(View.OnClickListener {
 
         })
@@ -125,10 +131,13 @@ class GameActivity : AppCompatActivity() {
         cardBg = Array(gameData.size) { Array(gameData.size) { TextView(this) } }
     }
 
+    fun saveData() {
+
+    }
+
     override fun onPause() {
         super.onPause()
     }
-
 
 
 }

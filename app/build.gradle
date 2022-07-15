@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.game2048kt"
-        minSdkVersion 16
+        minSdkVersion 28
         targetSdkVersion 31
         versionCode 1
         versionName "1.0"
@@ -33,7 +33,20 @@ android {
 }
 
 dependencies {
+    def roomVersion = "2.4.2"
 
+    implementation("androidx.room:room-runtime:$roomVersion")
+    annotationProcessor("androidx.room:room-compiler:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
+    ksp("androidx.room:room-compiler:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
+    implementation("androidx.room:room-rxjava2:$roomVersion")
+    implementation("androidx.room:room-rxjava3:$roomVersion")
+    implementation("androidx.room:room-guava:$roomVersion")
+    testImplementation("androidx.room:room-testing:$roomVersion")
+    implementation("androidx.room:room-paging:2.5.0-alpha02")
+
+    implementation 'com.facebook.stetho:stetho:1.5.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.2.0'
     implementation 'androidx.appcompat:appcompat:1.4.2'

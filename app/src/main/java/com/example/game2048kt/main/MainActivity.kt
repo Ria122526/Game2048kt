@@ -104,6 +104,5 @@ class MainActivity : AppCompatActivity() {
 
         tvSize.text = modeTitleImgData.title.key
         ivGameTitle.setBackgroundResource(modeTitleImgData.imgResource)
-
     }
 }
