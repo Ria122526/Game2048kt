@@ -2,7 +2,7 @@ package com.example.game2048kt.tools
 
 import android.content.Context
 
-class TransPx {
+object ConvertToDp {
     /**
      * Covert px to dp
      * @param px
