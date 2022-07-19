@@ -77,7 +77,8 @@ class MainActivity : AppCompatActivity() {
         }
         // 購物車
         ivCart.setOnClickListener {
-            // 這裡要設置Dialog
+            val cartDialog = MainCartDialog(this@MainActivity)
+            cartDialog.show()
         }
     }
 

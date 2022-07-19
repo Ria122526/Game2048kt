@@ -13,9 +13,13 @@ import androidx.room.Room
 import com.example.game2048kt.R
 import com.example.game2048kt.TheModeEnum
 import com.example.game2048kt.TheModeEnum.Companion.getEnum
+import com.example.game2048kt.game.GameSizeMoveData.gameSize
+import com.example.game2048kt.game.GameSizeMoveData.isMoved
 import com.example.game2048kt.roomDataBase.DataBase
 import com.example.game2048kt.roomDataBase.Rank
 import com.example.game2048kt.tools.ConvertToDp
+import java.util.*
+import java.util.Arrays.copyOf
 import kotlin.math.abs
 
 private const val MAR = 10
@@ -33,7 +37,6 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
     private lateinit var ivUndo: ImageView
     private lateinit var ivRestart: ImageView
 
-
     // 常用的Enum
     private var mode = getEnum("")
 
@@ -46,9 +49,6 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
     // 儲存的資料
     private var gameSaveData = GameSaveData()
 
-    // 不儲存的資料
-    private var gameData = GameData()
-
     // 與手勢相關，mPos起始位置、gesture手勢結果
     private var mPosX: Float = 0f
     private var mPosY: Float = 0f
@@ -56,7 +56,7 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
     private var gestureY: Float = 0f
 
     // todo 計分(全域?)
-    private var moveGrade = 0
+    private var moveScore = 0
 
     private var cardSize = 0f
     private var textSize = 0f
@@ -116,17 +116,17 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
 
     // 接收到模式後依照模式設定對應的大小
     private fun viewSizeSetting(size: Int, cardSize: Float, textSize: Float) {
-        gameData.size = size
+        gameSize = size
         this.cardSize = cardSize
         this.textSize = textSize
     }
 
     // 一些會用到的陣列給予大小
     private fun arraySizeSetting() {
-        gameSaveData.coorsArr = Array(gameData.size) { Array(gameData.size) { 0 } }
-        gameSaveData.moveArr = Array(gameData.size) { Array(gameData.size) { 0 } }
-        lastStep = Array(gameData.size) { Array(gameData.size) { 0 } }
-        cardBg = Array(gameData.size) { Array(gameData.size) { TextView(this) } }
+        gameSaveData.coorsArr = Array(gameSize) { Array(gameSize) { 0 } }
+        gameSaveData.moveArr = Array(gameSize) { Array(gameSize) { 0 } }
+        lastStep = Array(gameSize) { Array(gameSize) { 0 } }
+        cardBg = Array(gameSize) { Array(gameSize) { TextView(this) } }
     }
 
     // 動態生成遊戲畫面每一格的卡片
@@ -134,8 +134,8 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
 
         val gameGridLayout: GridLayout = findViewById(R.id.game_gl)
 
-        for (i in 0 until gameData.size) {
-            for (j in 0 until gameData.size) {
+        for (i in 0 until gameSize) {
+            for (j in 0 until gameSize) {
 
                 // 使用GridView LayoutParams 來設定尺寸與格數
                 val gridLayoutParams = GridLayout.LayoutParams(
@@ -148,9 +148,12 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
                 cardBg[i][j].textSize = textSize
 
                 gridLayoutParams.height =
-                    (ConvertToDp.convertPixelToDp(cardSize, this@GameActivity)).toInt()
+                    (ConvertToDp.convertDpToPixel(cardSize, this@GameActivity)).toInt()
                 gridLayoutParams.width =
-                    ConvertToDp.convertPixelToDp(cardSize, this@GameActivity).toInt()
+                    ConvertToDp.convertDpToPixel(cardSize, this@GameActivity).toInt()
+
+                println(gridLayoutParams.height)
+                println(gridLayoutParams.width)
 
                 gridLayoutParams.setMargins(MAR, MAR, MAR, MAR)
 
@@ -161,8 +164,8 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
 
     // 從資料中取得每一格的數字，賦予顏色、數字後，刷新遊戲格子的畫面
     private fun updateGameViews() {
-        for (i in 0 until gameData.size) {
-            for (j in 0 until gameData.size) {
+        for (i in 0 until gameSize) {
+            for (j in 0 until gameSize) {
 
                 val tvCardBg = cardBg[i][j]
                 // 從資料中獲取該格子為甚麼資料並設定文字
@@ -193,18 +196,31 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
         super.onPause()
     }
 
-//    private fun saveData() {
-//        // 建立資料庫物件
-//        val dataBase =
-//            Room.databaseBuilder(applicationContext, DataBase::class.java, "Rank").build()
-//
-//        // 建立DAO
-//        val rankDao = dataBase.dataDao()
-//        Thread {
-//            rankDao.insert(Rank("HAPPY666", 666))
-//            println(rankDao.getAll()[0])
-//        }.start()
-//    }
+    private fun saveData() {
+        // 建立資料庫物件
+        val dataBase =
+            Room.databaseBuilder(applicationContext, DataBase::class.java, "Rank").build()
+
+        // 建立DAO
+        val rankDao = dataBase.dataDao()
+        Thread {
+            var inputId = "HAPPY666"
+            var isFinding = false
+            for (i in rankDao.getAll()) {
+                if (i.id == inputId) {
+                    isFinding = true
+                    break
+                }
+            }
+
+            if (isFinding) {
+                rankDao.update(Rank("HAPPY666", 88888))
+            } else {
+                rankDao.insert(Rank("HAPPY666", 666))
+            }
+
+        }.start()
+    }
 
     private fun writeData() {}
 
@@ -223,10 +239,29 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
             MotionEvent.ACTION_MOVE -> {
                 if (abs(gestureX) != 0f || abs(gestureY) != 0f) return false
 
-                // 移動前需要暫存
+                saveLastStep()
+                // 判斷手勢方向 & 資料移動的方法
+
+                // 刷新分數的方法
             }
         }
 
         return true
+    }
+
+    // 移動前需要暫存，保存作為上一步
+    private fun saveLastStep() {
+
+        // 取得原始分數
+        moveScore = gameSaveData.score
+
+        for (i in 0 until (gameSaveData.moveArr.size)) {
+            val coors = gameSaveData.coorsArr[i]
+            gameSaveData.moveArr[i].copyOf(coors.size)
+        }
+    }
+
+    private fun gestureToWhere(event: MotionEvent) {
+
     }
 }

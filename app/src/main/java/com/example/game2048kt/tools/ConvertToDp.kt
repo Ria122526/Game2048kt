@@ -3,14 +3,15 @@ package com.example.game2048kt.tools
 import android.content.Context
 
 object ConvertToDp {
+
     /**
-     * Covert px to dp
-     * @param px
+     * Covert dp to px
+     * @param dp
      * @param context
-     * @return dp
+     * @return pixel
      */
-    fun convertPixelToDp(px: Float, context: Context): Float {
-        return px / getDensity(context)
+    fun convertDpToPixel(dp: Float, context: Context): Float {
+        return dp * getDensity(context)
     }
 
     /**
