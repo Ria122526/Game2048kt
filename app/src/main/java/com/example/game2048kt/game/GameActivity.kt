@@ -3,6 +3,7 @@ package com.example.game2048kt.game
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
+import android.view.MotionEvent
 import android.view.View
 import android.view.animation.Animation
 import android.widget.GridLayout
@@ -15,6 +16,7 @@ import com.example.game2048kt.TheModeEnum.Companion.getEnum
 import com.example.game2048kt.roomDataBase.DataBase
 import com.example.game2048kt.roomDataBase.Rank
 import com.example.game2048kt.tools.ConvertToDp
+import kotlin.math.abs
 
 private const val MAR = 10
 private const val THREE = 3
@@ -23,7 +25,7 @@ private const val FIVE = 5
 private const val SIX = 6
 private const val EIGHT = 8
 
-class GameActivity : AppCompatActivity() {
+class GameActivity : AppCompatActivity(), View.OnTouchListener {
 
     private lateinit var tvScore: TextView
     private lateinit var tvHighScore: TextView
@@ -59,7 +61,7 @@ class GameActivity : AppCompatActivity() {
     private var cardSize = 0f
     private var textSize = 0f
 
-    private lateinit var newCard: Animation
+    private lateinit var newCardAnimation: Animation
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,6 +72,7 @@ class GameActivity : AppCompatActivity() {
         initView()
         initClicks()
         gameCardsViewAdding()
+        updateGameViews()
     }
 
     // 載入view
@@ -129,7 +132,7 @@ class GameActivity : AppCompatActivity() {
     // 動態生成遊戲畫面每一格的卡片
     private fun gameCardsViewAdding() {
 
-        val gameGridLayout = GridLayout(this@GameActivity)
+        val gameGridLayout: GridLayout = findViewById(R.id.game_gl)
 
         for (i in 0 until gameData.size) {
             for (j in 0 until gameData.size) {
@@ -145,9 +148,9 @@ class GameActivity : AppCompatActivity() {
                 cardBg[i][j].textSize = textSize
 
                 gridLayoutParams.height =
-                    (ConvertToDp.convertPixelToDp(cardSize, this@GameActivity)) as Int
+                    (ConvertToDp.convertPixelToDp(cardSize, this@GameActivity)).toInt()
                 gridLayoutParams.width =
-                    ConvertToDp.convertPixelToDp(cardSize, this@GameActivity) as Int
+                    ConvertToDp.convertPixelToDp(cardSize, this@GameActivity).toInt()
 
                 gridLayoutParams.setMargins(MAR, MAR, MAR, MAR)
 
@@ -155,6 +158,36 @@ class GameActivity : AppCompatActivity() {
             }
         }
     }
+
+    // 從資料中取得每一格的數字，賦予顏色、數字後，刷新遊戲格子的畫面
+    private fun updateGameViews() {
+        for (i in 0 until gameData.size) {
+            for (j in 0 until gameData.size) {
+
+                val tvCardBg = cardBg[i][j]
+                // 從資料中獲取該格子為甚麼資料並設定文字
+                tvCardBg.text = (gameSaveData.coorsArr[i][j]).toString()
+
+                when (gameSaveData.coorsArr[i][j]) {
+                    2 -> tvCardBg.setBackgroundResource(R.color.cards_number2_EFE5DB)
+                    4 -> tvCardBg.setBackgroundResource(R.color.cards_number4_EDE1C9)
+                    8 -> tvCardBg.setBackgroundResource(R.color.cards_number8_F4B17A)
+                    16 -> tvCardBg.setBackgroundResource(R.color.cards_number16_F69463)
+                    32 -> tvCardBg.setBackgroundResource(R.color.cards_number32_F57C5F)
+                    64 -> tvCardBg.setBackgroundResource(R.color.cards_number64_F75E3E)
+                    128 -> tvCardBg.setBackgroundResource(R.color.cards_number128_EECF72)
+                    258 -> tvCardBg.setBackgroundResource(R.color.cards_number256_ECC850)
+                    0 -> {
+                        tvCardBg.text = ""
+                        tvCardBg.setBackgroundResource(R.color.cards_empty_D6CDC4)
+                    }
+
+                    else -> tvCardBg.setBackgroundResource(R.color.cards_numberDefault_EDC53F)
+                }
+            }
+        }
+    }
+
 
     override fun onPause() {
         super.onPause()
@@ -172,4 +205,28 @@ class GameActivity : AppCompatActivity() {
 //            println(rankDao.getAll()[0])
 //        }.start()
 //    }
+
+    private fun writeData() {}
+
+    override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+        when (event?.action) {
+            // 偵測第一個觸發點按下
+            MotionEvent.ACTION_DOWN -> {
+                gestureX = 0f
+                gestureY = 0f
+
+                mPosX = event.x
+                mPosY = event.y
+
+            }
+
+            MotionEvent.ACTION_MOVE -> {
+                if (abs(gestureX) != 0f || abs(gestureY) != 0f) return false
+
+                // 移動前需要暫存
+            }
+        }
+
+        return true
+    }
 }
