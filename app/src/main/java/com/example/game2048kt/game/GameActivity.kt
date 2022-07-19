@@ -14,12 +14,10 @@ import com.example.game2048kt.R
 import com.example.game2048kt.TheModeEnum
 import com.example.game2048kt.TheModeEnum.Companion.getEnum
 import com.example.game2048kt.game.GameSizeMoveData.gameSize
-import com.example.game2048kt.game.GameSizeMoveData.isMoved
-import com.example.game2048kt.roomDataBase.DataBase
-import com.example.game2048kt.roomDataBase.Rank
+import com.example.game2048kt.roomDataBase.RankData
+import com.example.game2048kt.roomDataBase.RankDataBase
 import com.example.game2048kt.tools.ConvertToDp
 import java.util.*
-import java.util.Arrays.copyOf
 import kotlin.math.abs
 
 private const val MAR = 10
@@ -199,7 +197,7 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
     private fun saveData() {
         // 建立資料庫物件
         val dataBase =
-            Room.databaseBuilder(applicationContext, DataBase::class.java, "Rank").build()
+            Room.databaseBuilder(applicationContext, RankDataBase::class.java, "Rank").build()
 
         // 建立DAO
         val rankDao = dataBase.dataDao()
@@ -214,9 +212,9 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
             }
 
             if (isFinding) {
-                rankDao.update(Rank("HAPPY666", 88888))
+                rankDao.update(RankData("HAPPY666", 88888))
             } else {
-                rankDao.insert(Rank("HAPPY666", 666))
+                rankDao.insert(RankData("HAPPY666", 666))
             }
 
         }.start()

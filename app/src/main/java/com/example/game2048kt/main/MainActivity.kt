@@ -58,8 +58,6 @@ class MainActivity : AppCompatActivity() {
             intent.setClass(this@MainActivity, GameActivity::class.java)
             intent.putExtra("mode", modeDataList[position].title.key)
             startActivity(intent)
-
-            println("MAIN: " + modeDataList[position].title.key)
         }
         // 排行榜
         tvRank.setOnClickListener {

@@ -31,6 +31,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/cart_dialog_check"
         android:text="@string/yes"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/cart_dialog_bt_no"
         app:layout_constraintStart_toStartOf="parent" />
@@ -41,6 +42,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/cart_dialog_check"
         android:text="@string/no"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/cart_dialog_bt_yes" />

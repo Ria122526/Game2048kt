@@ -1,5 +1,6 @@
 package com.example.game2048kt.main
 
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
@@ -9,7 +10,7 @@ import android.widget.Button
 import android.widget.TextView
 import com.example.game2048kt.R
 
-class MainCartDialog(context: Context) : Dialog(context) {
+class MainCartDialog(context: Context) : AlertDialog(context) {
 
     lateinit var btnYes: Button
     lateinit var btnNo: Button
@@ -39,6 +40,7 @@ class MainCartDialog(context: Context) : Dialog(context) {
 
         btnNo.setOnClickListener(View.OnClickListener {
             tvDialogTitle.text = "無廣告"
+            cancel()
         })
     }
 }

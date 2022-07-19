@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "Rank")
-data class Rank(
+data class RankData(
     @PrimaryKey val id: String = "NoName",
     @ColumnInfo(name = "score") val score: Int = 0
 )
