@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.game2048kt.R
 import com.example.game2048kt.TheModeEnum
 import com.example.game2048kt.game.GameActivity
+import com.example.game2048kt.rank.RankDialog
 
 class MainActivity : AppCompatActivity() {
 
@@ -61,7 +62,7 @@ class MainActivity : AppCompatActivity() {
         }
         // 排行榜
         tvRank.setOnClickListener {
-            // 這裡要設置Dialog
+            RankDialog(this@MainActivity).show()
         }
         // 選單往左
         ivSelectL.setOnClickListener {
@@ -75,8 +76,7 @@ class MainActivity : AppCompatActivity() {
         }
         // 購物車
         ivCart.setOnClickListener {
-            val cartDialog = MainCartDialog(this@MainActivity)
-            cartDialog.show()
+            MainCartDialog(this@MainActivity).show()
         }
     }
 

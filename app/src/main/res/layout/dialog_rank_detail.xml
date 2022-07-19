@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/dialog_bg">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/more_rank_cl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/more_rank_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/more_rank_iv_back"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:background="@color/white"
+            android:src="@drawable/ic_baseline_keyboard_backspace_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/more_rank_iv_me"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@mipmap/head1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:round="40dp" />
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/more_rank_iv_game"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@mipmap/logo_3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/more_rank_iv_me"
+            app:round="70dp" />
+
+        <TextView
+            android:id="@+id/more_rank_tv_game_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/three"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/more_rank_iv_game" />
+
+        <Spinner
+            android:id="@+id/more_rank_sp_time_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:entries="@array/spinnerValue"
+            android:gravity="left"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/more_rank_tv_game_title" />
+
+        <TextView
+            android:id="@+id/more_rank_tv_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="全部"
+            android:textColor="@color/grey9D"
+            app:layout_constraintEnd_toStartOf="@id/more_rank_sw"
+            app:layout_constraintTop_toTopOf="@id/more_rank_sp_time_arrow" />
+
+        <Switch
+            android:id="@+id/more_rank_sw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@id/more_rank_tv_friend"
+            app:layout_constraintTop_toTopOf="@id/more_rank_sp_time_arrow" />
+
+        <TextView
+            android:id="@+id/more_rank_tv_friend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="好友"
+            android:textColor="@color/grey9D"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/more_rank_sp_time_arrow" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/more_rank_view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey9D"
+        app:layout_constraintTop_toBottomOf="@id/more_rank_cl" />
+
+    <com.example.game.rank.MoreRankMeView
+        android:id="@+id/more_rank_me"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/more_rank_view" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/more_rank_rv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/more_rank_me" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

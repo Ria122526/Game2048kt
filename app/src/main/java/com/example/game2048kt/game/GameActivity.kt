@@ -16,7 +16,7 @@ import com.example.game2048kt.TheModeEnum.Companion.getEnum
 import com.example.game2048kt.game.GameSizeMoveData.gameSize
 import com.example.game2048kt.roomDataBase.RankData
 import com.example.game2048kt.roomDataBase.RankDataBase
-import com.example.game2048kt.tools.ConvertToDp
+import com.example.game2048kt.tools.ConvertToPixel
 import java.util.*
 import kotlin.math.abs
 
@@ -146,9 +146,9 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
                 cardBg[i][j].textSize = textSize
 
                 gridLayoutParams.height =
-                    (ConvertToDp.convertDpToPixel(cardSize, this@GameActivity)).toInt()
+                    (ConvertToPixel.convertDpToPixel(cardSize, this@GameActivity)).toInt()
                 gridLayoutParams.width =
-                    ConvertToDp.convertDpToPixel(cardSize, this@GameActivity).toInt()
+                    ConvertToPixel.convertDpToPixel(cardSize, this@GameActivity).toInt()
 
                 println(gridLayoutParams.height)
                 println(gridLayoutParams.width)

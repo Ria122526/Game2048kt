@@ -1,7 +1,6 @@
 package com.example.game2048kt.main
 
 import android.app.AlertDialog
-import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,7 +18,7 @@ class MainCartDialog(context: Context) : AlertDialog(context) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(LayoutInflater.from(context).inflate(R.layout.cart_dialog, null))
+        setContentView(LayoutInflater.from(context).inflate(R.layout.dialog_cart, null))
         setCanceledOnTouchOutside(true)
 
 

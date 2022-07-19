@@ -2,7 +2,7 @@
 <resources>
     <style name="RankDialogCustom">
         <!-- 對話框背景：半黑 -->
-        <item name="android:background">@color/black_tran</item>
+        <item name="android:background">@color/tran</item>
     </style>
 
     <style name="DialogCustomOutAni">
