@@ -1,6 +1,6 @@
 package com.example.game2048kt.game
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
 import android.view.MotionEvent
@@ -9,6 +9,7 @@ import android.view.animation.Animation
 import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
 import com.example.game2048kt.R
 import com.example.game2048kt.TheModeEnum
@@ -16,7 +17,6 @@ import com.example.game2048kt.TheModeEnum.Companion.getEnum
 import com.example.game2048kt.game.GameSizeMoveData.gameSize
 import com.example.game2048kt.roomDataBase.RankData
 import com.example.game2048kt.roomDataBase.RankDataBase
-import com.example.game2048kt.roomDataBase.RankDataUao
 import com.example.game2048kt.tools.ConvertToPixel
 import java.util.*
 import kotlin.math.abs
@@ -88,14 +88,35 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
     // 設定點擊監聽
     private fun initClicks() {
         ivRestart.setOnClickListener(View.OnClickListener {
-
+            restart()
         })
         ivUndo.setOnClickListener(View.OnClickListener {
 
         })
         ivShare.setOnClickListener(View.OnClickListener {
-
+            share()
         })
+    }
+
+    // 重新刷新所有資料
+    private fun restart() {
+        // 將所有資料全部歸零
+        gameSaveData.coorsArr = Array(gameSize) { Array(gameSize) { 0 } }
+        // 分數歸零
+        gameSaveData.score = 0
+        // 顯示的分數歸零
+        tvScore.text = "${gameSaveData.score}"
+        // 顯示的重新按鈕變回原本的樣式
+        ivRestart.setImageResource(R.drawable.ic_baseline_replay_24)
+    }
+
+    // 分享文本至其他應用程式
+    private fun share() {
+        val shareIntent = Intent()
+        shareIntent.action = Intent.ACTION_SEND
+        shareIntent.putExtra(Intent.EXTRA_TEXT,"喜歡這個遊戲嗎? https://沒有網址")
+        shareIntent.type = "text/plain"
+        startActivity(shareIntent)
     }
 
     // 接收外面傳入的模式、設定長度
