@@ -315,8 +315,11 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
                     updateGameViews()
                 }
 
-                // 判斷遊戲結束後禁止繼續滑動
-                if (checkGameOver()) return true
+                // 如果滿格且沒有辦法發生合併(遊戲結束)
+                if (!checkZeroLocation() && checkGameOver()) {
+                    endGameSetting()
+                }
+
             }
         }
         return true
@@ -372,28 +375,23 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
     // 判斷遊戲是否結束
     private fun checkGameOver(): Boolean {
 
-        // 當無法生成時
-        if (!checkZeroLocation()) {
-
-            // 先模擬合併，一旦合併，回傳false
-            for (j in 0 until gameSize) {
-                for (i in 0 until gameSize) {
-                    if (i + 1 != gameSize && gameSaveData.coorsArr[i][j] == gameSaveData.coorsArr[i + 1][j]) {
-                        return false;
-                    } else if (j + 1 != gameSize && gameSaveData.coorsArr[i][j] == gameSaveData.coorsArr[i][j + 1]) {
-                        return false;
-                    }
+        // 先模擬合併，一旦有機會合併，回傳false
+        for (j in 0 until gameSize) {
+            for (i in 0 until gameSize) {
+                if (i + 1 != gameSize && gameSaveData.coorsArr[i][j] == gameSaveData.coorsArr[i + 1][j]) {
+                    return false;
+                } else if (j + 1 != gameSize && gameSaveData.coorsArr[i][j] == gameSaveData.coorsArr[i][j + 1]) {
+                    return false;
                 }
             }
-
-            // 如果滿格且沒有辦法發生合併(遊戲結束)
-            endGameSetting()
         }
+
+        return true
     }
 
     // 遊戲結束時的設定
     private fun endGameSetting() {
-        ivRestart.setImageResource(R.drawable.ib_inform_end_cards)
+        ivRestart.setBackgroundResource(R.drawable.ib_inform_end_cards)
         ivUndo.isEnabled = false
         clGame.isEnabled = false
 
