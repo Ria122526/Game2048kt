@@ -18,84 +18,88 @@ class GameToWhere(
     private val coorsArr = coorsArr
     private val gameSaveData = gameSaveData
 
-    // 簡化版座標
-    var intArr = IntArray(gameSize)
+    // 取得去零後的的陣列
+    var takeIntArr = IntArray(gameSize)
 
-    // 由左至右、上至下堆疊
-    private fun movedAscData() {
+    // 由右至左、下至上合併
+    private fun moveAscData(isX: Boolean, loop: Int) {
+        var returnIndex = 0
 
-    }
+        if (isX) {
+            for (i in 0 until gameSize) {
+                if (returnIndex >= gameSize || takeIntArr[returnIndex] == 0) break
+                else if (returnIndex + 1 < gameSize && takeIntArr[returnIndex] == takeIntArr[returnIndex + 1]) {
+                    isMoved = true
+                    coorsArr[i][loop] = takeIntArr[returnIndex] + takeIntArr[returnIndex + 1]
+                    returnIndex++
+                }
+            }
+        } else {
 
-    // 由右至左、下至上堆疊
-    private fun moveDescData() {
-
-    }
-
-    private fun slide(way: String) {
-
-        for (i in 0 until gameSize) {
-//            updateIntArr(way, i)
-//            when (way) {
-//
-//                RIGHT->
-//                    LEFT ->
-//                UP->
-//                DOWN ->
-//            }
         }
+
+
     }
 
-    private fun updateIntArr(way: String, loop: Int) {
+    // 由左至右、上至下合併
+    private fun movedDescData() {
+
+    }
+
+
+    private fun take(way: String) {
 
         when (way) {
-            RIGHT, LEFT -> getArrayX(loop)
-            UP, DOWN -> getArrayY(loop)
+            RIGHT, LEFT -> {
+                for (loop in 0 until gameSize) {
+                    getArray(true, loop)
+                }
+
+                // 堆疊回去
+                if (way == RIGHT) {
+
+                } else {
+
+                }
+            }
+
+            UP, DOWN -> {
+                for (loop in 0 until gameSize) {
+                    getArray(false, loop)
+                }
+            }
         }
     }
 
-    // 取出X軸，統一使用取出的的資料
-    private fun getArrayX(loop: Int) {
-        var takeIntArr = IntArray(gameSize)
+    // 取出資料
+    private fun getArray(isX: Boolean, loop: Int) {
         var addIndex = 0
 
         for (i in 0 until gameSize) {
-            // 遇到0不儲存
-            if (coorsArr[i][loop] == 0) continue
+            if (isX) {
+                // 遇到0不儲存
+                if (coorsArr[i][loop] == 0) continue
 
-            // 取出資料暫存
-            takeIntArr[addIndex] = coorsArr[i][loop]
-            // 原始資料歸零
-            coorsArr[i][loop] = 0
+                // 取出資料暫存
+                takeIntArr[addIndex] = coorsArr[i][loop]
+
+                // 原始資料歸零
+                coorsArr[i][loop] = 0
+            } else {
+                // 遇到0不儲存
+                if (coorsArr[loop][i] == 0) continue
+
+                // 取出資料暫存
+                takeIntArr[addIndex] = coorsArr[i][loop]
+
+                // 原始資料歸零
+                coorsArr[loop][i] = 0
+            }
 
             // 當已經發生addIndex與i遇0不儲存跳過i，代表資料曾經動過
-            if (addIndex != i) isMoved = true
+            if (addIndex != i) GameSizeMoveData.isMoved = true
 
             addIndex++
         }
-
-        intArr = takeIntArr
-    }
-
-    // 取出Y軸，統一使用取出的的資料
-    private fun getArrayY(loop: Int) {
-        var takeIntArr = IntArray(gameSize)
-        var addIndex = 0
-
-        for (i in 0 until gameSize) {
-            // 遇到0不儲存
-            if (coorsArr[loop][i] == 0) continue
-
-            // 取出資料暫存
-            takeIntArr[addIndex] = coorsArr[i][loop]
-            // 原始資料歸零
-            coorsArr[loop][i] = 0
-
-            // 當已經發生addIndex與i遇0不儲存跳過i，代表資料曾經動過
-            if (addIndex != i) isMoved = true
-
-            addIndex++
-        }
-
-        intArr = takeIntArr
     }
 }
