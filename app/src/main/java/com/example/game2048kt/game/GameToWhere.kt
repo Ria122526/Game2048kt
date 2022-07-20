@@ -4,24 +4,23 @@ import com.example.game2048kt.game.GameSizeMoveData.gameSize
 import com.example.game2048kt.game.GameSizeMoveData.isMoved
 
 
-private const val RIGHT = "RIGHT"
-private const val DOWN = "DOWN"
-private const val LEFT = "LEFT"
-private const val UP = "UP"
-
 class GameToWhere(
-    gameSaveData: GameSaveData,
-    coorsArr: Array<Array<Int>>
+    gameSaveData: GameSaveData, coorsArr: Array<Array<Int>>
 ) {
 
-    var coorsArr = coorsArr
+    val R = "RIGHT"
+    val D = "DOWN"
+    val L = "LEFT"
+    val U = "UP"
+
     var gameSaveData = gameSaveData
+    var coorsArr = coorsArr
 
     private fun rightData(y: Int) {
         // 倒取倒放
         // 初始化資料
-        var takeX = IntArray(gameSize)
-        var addIndex = gameSize - 1
+        val takeX = IntArray(gameSize)
+        val addIndex = gameSize - 1
         var returnIndex = gameSize - 1
 
         // 倒取
@@ -38,8 +37,8 @@ class GameToWhere(
         }
 
         // 檢查是否需要合併
-        for (i in gameSize - 1 until -1) {
-            if (returnIndex < 0 || takeX[returnIndex] != takeX[returnIndex - 1]) break
+        for (i in (gameSize - 1) downTo 0) {
+            if (returnIndex < 0 || takeX[returnIndex] == 0) break
             else if (returnIndex == 0 || takeX[returnIndex] != takeX[returnIndex - 1]) {
                 coorsArr[i][y] = takeX[returnIndex]
             } else {
@@ -99,10 +98,10 @@ class GameToWhere(
             addIndex--
         }
 
-        for (i in gameSize - 1 until -1) {
-            if (returnIndex < 0 || takeY[returnIndex] != takeY[returnIndex - 1]) {
-                coorsArr[x][i] = takeY[returnIndex]
-            } else if (returnIndex == 0 || takeY[returnIndex] != takeY[returnIndex - 1]) {
+        for (i in (gameSize - 1) downTo 0) {
+
+            if (returnIndex < 0 || takeY[returnIndex] == 0) break
+            else if (returnIndex == 0 || takeY[returnIndex] != takeY[returnIndex - 1]) {
                 coorsArr[x][i] = takeY[returnIndex]
             } else {
                 isMoved = true
@@ -115,14 +114,15 @@ class GameToWhere(
     }
 
     private fun upData(x: Int) {
-        val takeY = IntArray(gameSize)
+        val takeX = IntArray(gameSize)
         var addIndex = 0
         var returnIndex = 0
 
+        // 正取正放
         for (i in 0 until gameSize) {
             if (coorsArr[x][i] == 0) continue
 
-            takeY[addIndex] = coorsArr[x][i]
+            takeX[addIndex] = coorsArr[x][i]
             coorsArr[x][i] = 0
 
             if (addIndex != i) isMoved = true
@@ -131,25 +131,33 @@ class GameToWhere(
         }
 
         for (i in 0 until gameSize) {
-            if (returnIndex >= gameSize || takeY[returnIndex] == 0) break
-            else if (returnIndex + 1 < gameSize && takeY[returnIndex] == takeY[returnIndex + 1]) {
+            if (returnIndex >= gameSize || takeX[returnIndex] == 0) break
+            else if (returnIndex + 1 < gameSize && takeX[returnIndex] == takeX[returnIndex + 1]) {
                 isMoved = true
-                coorsArr[x][i] = takeY[returnIndex] + takeY[returnIndex + 1]
+                coorsArr[x][i] = takeX[returnIndex] + takeX[returnIndex + 1]
                 gameSaveData.score = gameSaveData.score + coorsArr[x][i]
                 returnIndex++
             } else {
-                coorsArr[x][i] = takeY[returnIndex]
+                coorsArr[x][i] = takeX[returnIndex]
             }
             returnIndex++
         }
     }
 
     fun slide(way: String) {
-        when(way){
-            RIGHT -> for (i in 0 until gameSize) rightData(i)
-            LEFT -> for (i in 0 until gameSize) leftData(i)
-            DOWN -> for (i in 0 until gameSize) downData(i)
-            UP -> for (i in 0 until gameSize) upData(i)
+        when (way) {
+            R -> {
+                for (i in 0 until gameSize) {
+                    rightData(i)
+                }
+            }
+            L -> for (i in 0 until gameSize) leftData(i)
+            D -> {
+                for (i in 0 until gameSize) {
+                    downData(i)
+                }
+            }
+            U -> for (i in 0 until gameSize) upData(i)
         }
     }
 }
