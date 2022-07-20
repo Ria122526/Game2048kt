@@ -32,7 +32,7 @@
             android:src="@mipmap/head1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:round="40dp" />
+            app:round="40dp"/>
 
         <androidx.constraintlayout.utils.widget.ImageFilterView
             android:id="@+id/more_rank_iv_game"
@@ -102,11 +102,59 @@
         android:background="@color/grey9D"
         app:layout_constraintTop_toBottomOf="@id/more_rank_cl" />
 
-    <com.example.game.rank.MoreRankMeView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/more_rank_me"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/more_rank_view" />
+        android:padding="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/more_rank_view">
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/more_rank_iv_head"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@mipmap/head1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/more_rank_tv_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="Ria122526(你)"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@+id/more_rank_iv_head"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/more_rank_tv_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="分數：0"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@+id/more_rank_tv_id"
+            app:layout_constraintTop_toBottomOf="@id/more_rank_tv_id" />
+
+        <TextView
+            android:id="@+id/more_rank_tv_pr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" N / A"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@+id/more_rank_tv_score"
+            app:layout_constraintTop_toBottomOf="@id/more_rank_tv_score" />
+
+        <TextView
+            android:id="@+id/more_rank_tv_rank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="第 N/A 名"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/more_rank_rv"
