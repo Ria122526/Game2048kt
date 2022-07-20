@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/single_ranker_head"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@mipmap/head1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/single_ranker_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="Default"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@id/single_ranker_head"
+        app:layout_constraintTop_toTopOf="@id/single_ranker_head" />
+
+    <TextView
+        android:id="@+id/single_ranker_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="分數：52"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/single_ranker_id"
+        app:layout_constraintTop_toBottomOf="@id/single_ranker_id" />
+
+    <TextView
+        android:id="@+id/single_ranker_rank"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="第 1 名"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

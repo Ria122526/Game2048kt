@@ -10,6 +10,8 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.game2048kt.R
+import com.example.game2048kt.TheModeEnum
+import com.example.game2048kt.main.MainActivity
 import com.example.game2048kt.tools.ConvertToPixel
 
 class RankDialog(context: Context) : Dialog(context, R.style.RankDialogCustom),
@@ -53,13 +55,15 @@ class RankDialog(context: Context) : Dialog(context, R.style.RankDialogCustom),
     }
 
     override fun onClick(v: View?) {
+        val rankDetailDialog = RankDetailDialog(this@RankDialog.context)
         when (v?.id) {
-//            R.id.dg_ll_three ->
-//            R.id.dg_ll_four ->
-//            R.id.dg_ll_five ->
-//            R.id.dg_ll_six ->
-//            R.id.dg_ll_eight ->
+            R.id.dg_ll_three -> rankDetailDialog.modeReceived(TheModeEnum.THREE_THREE)
+            R.id.dg_ll_four -> rankDetailDialog.modeReceived(TheModeEnum.FOUR_FOUR)
+            R.id.dg_ll_five -> rankDetailDialog.modeReceived(TheModeEnum.FIVE_FIVE)
+            R.id.dg_ll_six -> rankDetailDialog.modeReceived(TheModeEnum.SIX_SIX)
+            R.id.dg_ll_eight -> rankDetailDialog.modeReceived(TheModeEnum.EIGHT_EIGHT)
         }
+        rankDetailDialog.show()
     }
 
     override fun onTouch(v: View?, event: MotionEvent?): Boolean {

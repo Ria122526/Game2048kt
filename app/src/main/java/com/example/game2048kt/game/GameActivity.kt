@@ -16,6 +16,7 @@ import com.example.game2048kt.TheModeEnum.Companion.getEnum
 import com.example.game2048kt.game.GameSizeMoveData.gameSize
 import com.example.game2048kt.roomDataBase.RankData
 import com.example.game2048kt.roomDataBase.RankDataBase
+import com.example.game2048kt.roomDataBase.RankDataUao
 import com.example.game2048kt.tools.ConvertToPixel
 import java.util.*
 import kotlin.math.abs
@@ -71,6 +72,8 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
         initClicks()
         gameCardsViewAdding()
         updateGameViews()
+
+        saveRankData()
     }
 
     // 載入view
@@ -194,7 +197,7 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
         super.onPause()
     }
 
-    private fun saveData() {
+    private fun saveRankData() {
         // 建立資料庫物件
         val dataBase =
             Room.databaseBuilder(applicationContext, RankDataBase::class.java, "Rank").build()

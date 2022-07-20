@@ -7,17 +7,17 @@
     android:background="@drawable/dialog_bg">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/more_rank_cl"
+        android:id="@+id/rank_detail_cl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/more_rank_view"
+        app:layout_constraintBottom_toTopOf="@+id/rank_detail_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/more_rank_iv_back"
+            android:id="@+id/rank_detail_iv_back"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:background="@color/white"
@@ -26,26 +26,26 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.utils.widget.ImageFilterView
-            android:id="@+id/more_rank_iv_me"
+            android:id="@+id/rank_detail_iv_me"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@mipmap/head1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:round="40dp"/>
+            app:round="40dp" />
 
         <androidx.constraintlayout.utils.widget.ImageFilterView
-            android:id="@+id/more_rank_iv_game"
+            android:id="@+id/rank_detail_iv_game"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:src="@mipmap/logo_3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/more_rank_iv_me"
+            app:layout_constraintTop_toBottomOf="@id/rank_detail_iv_me"
             app:round="70dp" />
 
         <TextView
-            android:id="@+id/more_rank_tv_game_title"
+            android:id="@+id/rank_detail_tv_game_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
@@ -54,63 +54,63 @@
             android:textSize="22sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/more_rank_iv_game" />
+            app:layout_constraintTop_toBottomOf="@id/rank_detail_iv_game" />
 
         <Spinner
-            android:id="@+id/more_rank_sp_time_arrow"
+            android:id="@+id/rank_detail_sp_time_arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:entries="@array/spinnerValue"
             android:gravity="left"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/more_rank_tv_game_title" />
+            app:layout_constraintTop_toBottomOf="@id/rank_detail_tv_game_title" />
 
         <TextView
-            android:id="@+id/more_rank_tv_all"
+            android:id="@+id/rank_detail_tv_all"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="全部"
             android:textColor="@color/grey9D"
-            app:layout_constraintEnd_toStartOf="@id/more_rank_sw"
-            app:layout_constraintTop_toTopOf="@id/more_rank_sp_time_arrow" />
+            app:layout_constraintEnd_toStartOf="@id/rank_detail_sw"
+            app:layout_constraintTop_toTopOf="@id/rank_detail_sp_time_arrow" />
 
         <Switch
-            android:id="@+id/more_rank_sw"
+            android:id="@+id/rank_detail_sw"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toStartOf="@id/more_rank_tv_friend"
-            app:layout_constraintTop_toTopOf="@id/more_rank_sp_time_arrow" />
+            app:layout_constraintEnd_toStartOf="@id/rank_detail_tv_friend"
+            app:layout_constraintTop_toTopOf="@id/rank_detail_sp_time_arrow" />
 
         <TextView
-            android:id="@+id/more_rank_tv_friend"
+            android:id="@+id/rank_detail_tv_friend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="好友"
             android:textColor="@color/grey9D"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/more_rank_sp_time_arrow" />
+            app:layout_constraintTop_toTopOf="@id/rank_detail_sp_time_arrow" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
-        android:id="@+id/more_rank_view"
+        android:id="@+id/rank_detail_view"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/grey9D"
-        app:layout_constraintTop_toBottomOf="@id/more_rank_cl" />
+        app:layout_constraintTop_toBottomOf="@id/rank_detail_cl" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/more_rank_me"
+        android:id="@+id/rank_detail_me"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        app:layout_constraintTop_toBottomOf="@+id/more_rank_view">
+        app:layout_constraintTop_toBottomOf="@+id/rank_detail_view">
 
         <androidx.constraintlayout.utils.widget.ImageFilterView
-            android:id="@+id/more_rank_iv_head"
+            android:id="@+id/rank_detail_iv_my_head"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@mipmap/head1"
@@ -118,36 +118,36 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/more_rank_tv_id"
+            android:id="@+id/rank_detail_tv_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:text="Ria122526(你)"
             android:textColor="@color/black"
             android:textSize="14sp"
-            app:layout_constraintStart_toEndOf="@+id/more_rank_iv_head"
+            app:layout_constraintStart_toEndOf="@+id/rank_detail_iv_my_head"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/more_rank_tv_score"
+            android:id="@+id/rank_detail_tv_score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="分數：0"
             android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@+id/more_rank_tv_id"
-            app:layout_constraintTop_toBottomOf="@id/more_rank_tv_id" />
+            app:layout_constraintStart_toStartOf="@+id/rank_detail_tv_id"
+            app:layout_constraintTop_toBottomOf="@id/rank_detail_tv_id" />
 
         <TextView
-            android:id="@+id/more_rank_tv_pr"
+            android:id="@+id/rank_detail_tv_pr"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=" N / A"
             android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@+id/more_rank_tv_score"
-            app:layout_constraintTop_toBottomOf="@id/more_rank_tv_score" />
+            app:layout_constraintStart_toStartOf="@+id/rank_detail_tv_score"
+            app:layout_constraintTop_toBottomOf="@id/rank_detail_tv_score" />
 
         <TextView
-            android:id="@+id/more_rank_tv_rank"
+            android:id="@+id/rank_detail_tv_rank"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="第 N/A 名"
@@ -157,11 +157,11 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/more_rank_rv"
+        android:id="@+id/rank_detail_rv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/more_rank_me" />
+        app:layout_constraintTop_toBottomOf="@+id/rank_detail_me" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
