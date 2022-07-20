@@ -14,92 +14,142 @@ class GameToWhere(
     coorsArr: Array<Array<Int>>
 ) {
 
-    // 獲取傳入的值
-    private val coorsArr = coorsArr
-    private val gameSaveData = gameSaveData
+    var coorsArr = coorsArr
+    var gameSaveData = gameSaveData
 
-    // 取得去零後的的陣列
-    var takeIntArr = IntArray(gameSize)
+    private fun rightData(y: Int) {
+        // 倒取倒放
+        // 初始化資料
+        var takeX = IntArray(gameSize)
+        var addIndex = gameSize - 1
+        var returnIndex = gameSize - 1
 
-    // 由右至左、下至上合併
-    private fun moveAscData(isX: Boolean, loop: Int) {
+        // 倒取
+        for (i in 0 until gameSize) {
+            // 遇0跳過不取
+            if (coorsArr[i][y] == 0) continue
+
+            // 倒著取
+            takeX[addIndex] = coorsArr[i][y]
+            coorsArr[i][y] = 0
+
+            // 當不同步時表示可以且有發生移動
+            if (addIndex != i) isMoved = true
+        }
+
+        // 檢查是否需要合併
+        for (i in gameSize - 1 until -1) {
+            if (returnIndex < 0 || takeX[returnIndex] != takeX[returnIndex - 1]) break
+            else if (returnIndex == 0 || takeX[returnIndex] != takeX[returnIndex - 1]) {
+                coorsArr[i][y] = takeX[returnIndex]
+            } else {
+                isMoved = true
+                coorsArr[i][y] = takeX[returnIndex] + takeX[returnIndex - 1]
+                gameSaveData.score = gameSaveData.score + coorsArr[i][y]
+                returnIndex--
+            }
+            returnIndex--
+        }
+    }
+
+    private fun leftData(y: Int) {
+        val takeX = IntArray(gameSize)
+        var addIndex = 0
         var returnIndex = 0
 
-        if (isX) {
-            for (i in 0 until gameSize) {
-                if (returnIndex >= gameSize || takeIntArr[returnIndex] == 0) break
-                else if (returnIndex + 1 < gameSize && takeIntArr[returnIndex] == takeIntArr[returnIndex + 1]) {
-                    isMoved = true
-                    coorsArr[i][loop] = takeIntArr[returnIndex] + takeIntArr[returnIndex + 1]
-                    returnIndex++
-                }
-            }
-        } else {
-
-        }
-
-
-    }
-
-    // 由左至右、上至下合併
-    private fun movedDescData() {
-
-    }
-
-
-    private fun take(way: String) {
-
-        when (way) {
-            RIGHT, LEFT -> {
-                for (loop in 0 until gameSize) {
-                    getArray(true, loop)
-                }
-
-                // 堆疊回去
-                if (way == RIGHT) {
-
-                } else {
-
-                }
-            }
-
-            UP, DOWN -> {
-                for (loop in 0 until gameSize) {
-                    getArray(false, loop)
-                }
-            }
-        }
-    }
-
-    // 取出資料
-    private fun getArray(isX: Boolean, loop: Int) {
-        var addIndex = 0
-
+        // 正取正放
         for (i in 0 until gameSize) {
-            if (isX) {
-                // 遇到0不儲存
-                if (coorsArr[i][loop] == 0) continue
+            if (coorsArr[i][y] == 0) continue
 
-                // 取出資料暫存
-                takeIntArr[addIndex] = coorsArr[i][loop]
+            takeX[addIndex] = coorsArr[i][y]
+            coorsArr[i][y] = 0
 
-                // 原始資料歸零
-                coorsArr[i][loop] = 0
-            } else {
-                // 遇到0不儲存
-                if (coorsArr[loop][i] == 0) continue
-
-                // 取出資料暫存
-                takeIntArr[addIndex] = coorsArr[i][loop]
-
-                // 原始資料歸零
-                coorsArr[loop][i] = 0
-            }
-
-            // 當已經發生addIndex與i遇0不儲存跳過i，代表資料曾經動過
-            if (addIndex != i) GameSizeMoveData.isMoved = true
+            if (addIndex != i) isMoved = true
 
             addIndex++
+        }
+
+        for (i in 0 until gameSize) {
+            if (returnIndex >= gameSize || takeX[returnIndex] == 0) break
+            else if (returnIndex + 1 < gameSize && takeX[returnIndex] == takeX[returnIndex + 1]) {
+                isMoved = true
+                coorsArr[i][y] = takeX[returnIndex] + takeX[returnIndex + 1]
+                gameSaveData.score = gameSaveData.score + coorsArr[i][y]
+                returnIndex++
+            } else {
+                coorsArr[i][y] = takeX[returnIndex]
+            }
+            returnIndex++
+        }
+    }
+
+    private fun downData(x: Int) {
+        val takeY = IntArray(gameSize)
+        var addIndex = gameSize - 1
+        var returnIndex = gameSize - 1
+
+        for (i in 0 until gameSize) {
+            if (coorsArr[x][i] == 0) continue
+
+            takeY[addIndex] = coorsArr[x][i]
+            coorsArr[x][i] = 0
+
+            if (addIndex != i) isMoved = true
+
+            addIndex--
+        }
+
+        for (i in gameSize - 1 until -1) {
+            if (returnIndex < 0 || takeY[returnIndex] != takeY[returnIndex - 1]) {
+                coorsArr[x][i] = takeY[returnIndex]
+            } else if (returnIndex == 0 || takeY[returnIndex] != takeY[returnIndex - 1]) {
+                coorsArr[x][i] = takeY[returnIndex]
+            } else {
+                isMoved = true
+                coorsArr[x][i] = takeY[returnIndex] + takeY[returnIndex - 1]
+                gameSaveData.score = gameSaveData.score + coorsArr[x][i]
+                returnIndex--
+            }
+            returnIndex--
+        }
+    }
+
+    private fun upData(x: Int) {
+        val takeY = IntArray(gameSize)
+        var addIndex = 0
+        var returnIndex = 0
+
+        for (i in 0 until gameSize) {
+            if (coorsArr[x][i] == 0) continue
+
+            takeY[addIndex] = coorsArr[x][i]
+            coorsArr[x][i] = 0
+
+            if (addIndex != i) isMoved = true
+
+            addIndex++
+        }
+
+        for (i in 0 until gameSize) {
+            if (returnIndex >= gameSize || takeY[returnIndex] == 0) break
+            else if (returnIndex + 1 < gameSize && takeY[returnIndex] == takeY[returnIndex + 1]) {
+                isMoved = true
+                coorsArr[x][i] = takeY[returnIndex] + takeY[returnIndex + 1]
+                gameSaveData.score = gameSaveData.score + coorsArr[x][i]
+                returnIndex++
+            } else {
+                coorsArr[x][i] = takeY[returnIndex]
+            }
+            returnIndex++
+        }
+    }
+
+    fun slide(way: String) {
+        when(way){
+            RIGHT -> for (i in 0 until gameSize) rightData(i)
+            LEFT -> for (i in 0 until gameSize) leftData(i)
+            DOWN -> for (i in 0 until gameSize) downData(i)
+            UP -> for (i in 0 until gameSize) upData(i)
         }
     }
 }
