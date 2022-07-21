@@ -20,11 +20,11 @@ class GameToWhere(
         // 倒取倒放
         // 初始化資料
         val takeX = IntArray(gameSize)
-        val addIndex = gameSize - 1
+        var addIndex = gameSize - 1
         var returnIndex = gameSize - 1
 
         // 倒取
-        for (i in 0 until gameSize) {
+        for (i in (gameSize - 1) downTo 0) {
             // 遇0跳過不取
             if (coorsArr[i][y] == 0) continue
 
@@ -34,6 +34,8 @@ class GameToWhere(
 
             // 當不同步時表示可以且有發生移動
             if (addIndex != i) isMoved = true
+
+            addIndex--
         }
 
         // 檢查是否需要合併
@@ -87,7 +89,7 @@ class GameToWhere(
         var addIndex = gameSize - 1
         var returnIndex = gameSize - 1
 
-        for (i in 0 until gameSize) {
+        for (i in (gameSize - 1) downTo 0) {
             if (coorsArr[x][i] == 0) continue
 
             takeY[addIndex] = coorsArr[x][i]
