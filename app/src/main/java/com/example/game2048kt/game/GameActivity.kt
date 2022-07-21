@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
-import android.view.animation.Animation
+import android.view.animation.AnimationUtils.loadAnimation
 import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.TextView
@@ -70,8 +70,6 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
     // 座標位置
     private var randX: Int = 0
     private var randY: Int = 0
-
-    private lateinit var newCardAnimation: Animation
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -164,6 +162,14 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
         if (randomWeight < 95) gameSaveData.coorsArr[randX][randY] = 2
         else gameSaveData.coorsArr[randX][randY] = 2
     }
+
+    // 每次生成的動畫
+    private fun addNewNumberAnimations() {
+        cardBg[randX][randY].startAnimation(
+            loadAnimation(this, R.anim.card_out)
+        )
+    }
+
 
     // 尋找是否有為0的數字
     private fun checkZeroLocation(): Boolean {
@@ -321,13 +327,16 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
                 // 如果手勢後發生了移動
                 if (isMoved) {
 
-                    // todo 弄清楚這個東西到底是在想啥....
+                    // todo 弄清楚這個東西到底是在想啥....?
                     for (i in 0 until gameSize) {
                         lastStep[i] = gameSaveData.moveArr[i].copyOf()
                     }
 
+                    isMoved = false
+
                     updateScore()
                     randAddNewNumber()
+                    addNewNumberAnimations()
                     updateGameViews()
                 }
 
