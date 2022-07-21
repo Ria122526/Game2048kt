@@ -60,8 +60,9 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
     private var gestureX: Float = 0f
     private var gestureY: Float = 0f
 
-    // todo 計分(全域?)
-    private var moveScore = 0
+    // 移動前保存的分術
+    private var lastMoveScore = 0
+    private var lastMoveHighScore = 0
 
     private var cardSize = 0f
     private var textSize = 0f
@@ -102,7 +103,8 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
             restart()
         })
         ivUndo.setOnClickListener(View.OnClickListener {
-
+            undo()
+            updateGameViews()
         })
         ivShare.setOnClickListener(View.OnClickListener {
             share()
@@ -125,6 +127,27 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
         updateGameViews()
     }
 
+    // 重回上一步
+    private fun undo() {
+
+        // lastStep代表上次儲存的陣列
+        for (i in 0 until gameSize) {
+            gameSaveData.coorsArr[i] = lastStep[i].copyOf()
+        }
+
+        gameSaveData.score = lastMoveScore
+        tvScore.text = "${gameSaveData.score}"
+    }
+
+    // 分享文本至其他應用程式
+    private fun share() {
+        val shareIntent = Intent()
+        shareIntent.action = Intent.ACTION_SEND
+        shareIntent.putExtra(Intent.EXTRA_TEXT, "喜歡這個遊戲嗎? https://沒有網址")
+        shareIntent.type = "text/plain"
+        startActivity(shareIntent)
+    }
+
     // 隨機找到可生成的位置並給予數字2、4
     private fun randAddNewNumber() {
         // 當其中有0的空格就可以生成
@@ -142,12 +165,13 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
         else gameSaveData.coorsArr[randX][randY] = 2
     }
 
+    // 尋找是否有為0的數字
     private fun checkZeroLocation(): Boolean {
+
         for (i in 0 until gameSize) {
-            for (j in 0 until gameSize) {
-                if (gameSaveData.coorsArr[i][j] == 0) return true
-            }
+            return gameSaveData.coorsArr[i].contains(0)
         }
+
         return false
     }
 
@@ -177,15 +201,6 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
                 }
             }
         }
-    }
-
-    // 分享文本至其他應用程式
-    private fun share() {
-        val shareIntent = Intent()
-        shareIntent.action = Intent.ACTION_SEND
-        shareIntent.putExtra(Intent.EXTRA_TEXT, "喜歡這個遊戲嗎? https://沒有網址")
-        shareIntent.type = "text/plain"
-        startActivity(shareIntent)
     }
 
     // 接收外面傳入的模式、設定長度
@@ -295,7 +310,6 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
 
                 mPosX = event.x
                 mPosY = event.y
-
             }
 
             MotionEvent.ACTION_MOVE -> {
@@ -304,10 +318,12 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
                 saveLastStep()
                 gestureToWhere(event)
 
-                // 檢查有沒有移動
+                // 如果手勢後發生了移動
                 if (isMoved) {
-                    for (i in 0 until lastStep.size) {
-                        lastStep.copyOf(gameSaveData.moveArr[i].size)
+
+                    // todo 弄清楚這個東西到底是在想啥....
+                    for (i in 0 until gameSize) {
+                        lastStep[i] = gameSaveData.moveArr[i].copyOf()
                     }
 
                     updateScore()
@@ -319,21 +335,21 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
                 if (!checkZeroLocation() && checkGameOver()) {
                     endGameSetting()
                 }
-
             }
         }
         return true
     }
 
-    // 移動前需要暫存，保存作為上一步
+    // 移動前需要暫存，保存上一步
     private fun saveLastStep() {
 
-        // 取得原始分數
-        moveScore = gameSaveData.score
+        // 取得移動前的分數與高分
+        lastMoveScore = gameSaveData.score
+        lastMoveHighScore = gameSaveData.highScore
 
-        for (i in 0 until (gameSaveData.moveArr.size)) {
-            val coors = gameSaveData.coorsArr[i]
-            gameSaveData.moveArr[i].copyOf(coors.size)
+        // 取得移動前的遊戲資料
+        for (i in 0 until gameSize) {
+            gameSaveData.moveArr[i] = gameSaveData.coorsArr[i].copyOf()
         }
     }
 
@@ -346,18 +362,14 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
 
         if (abs(gestureX) > abs(gestureY)) {
             if (gestureX > 5) {
-                println("→→→→→→")
                 to.slide(to.R)
             } else if (gestureX < -5) {
-                println("←←←←←←←")
                 to.slide(to.L)
             }
         } else if (abs(gestureX) < abs(gestureY)) {
             if (gestureY > 5) {
-                println("↓↓↓↓↓↓↓")
                 to.slide(to.D)
             } else if (gestureY < -5) {
-                println("↑↑↑↑↑↑↑")
                 to.slide(to.U)
             }
         }
@@ -385,7 +397,6 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
                 }
             }
         }
-
         return true
     }
 
@@ -397,5 +408,4 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
 
         // todo 遊戲結束時的遮片
     }
-
 }
