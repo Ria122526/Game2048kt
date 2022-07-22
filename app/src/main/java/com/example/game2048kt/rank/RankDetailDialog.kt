@@ -1,8 +1,9 @@
 package com.example.game2048kt.rank
 
+//import com.example.game2048kt.roomDataBase.RankData
+//import com.example.game2048kt.roomDataBase.RankDataBase
 import android.app.Dialog
 import android.content.Context
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageButton
@@ -11,12 +12,8 @@ import android.widget.TextView
 import androidx.constraintlayout.utils.widget.ImageFilterView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
 import com.example.game2048kt.R
 import com.example.game2048kt.TheModeEnum
-import com.example.game2048kt.roomDataBase.RankData
-import com.example.game2048kt.roomDataBase.RankDataBase
-import com.google.gson.Gson
 
 class RankDetailDialog(context: Context) :
     Dialog(context, android.R.style.Theme_Light_NoTitleBar_Fullscreen) {
@@ -78,26 +75,26 @@ class RankDetailDialog(context: Context) :
 
     private fun writeRankData() {
         // 建立資料庫物件
-        val rankDataBase = Room.databaseBuilder(
-            this@RankDetailDialog.context,
-            RankDataBase::class.java,
-            "Rank"
-        ).build()
+//        val rankDataBase = Room.databaseBuilder(
+//            this@RankDetailDialog.context,
+//            RankDataBase::class.java,
+//            "Rank"
+//        ).build()
 
         // 取得DAO
-        val rankDao = rankDataBase.dataDao()
+//        val rankDao = rankDataBase.dataDao()
 
-        Thread {
-
-            for (i in rankDao.getAll()) {
-                val data = RankerArrData()
-
-                data.rankerId = i.id
-                data.rankerScore = i.score
-
-                rankerArr.add(data)
-            }
-
-        }.start()
+//        Thread {
+//
+//            for (i in rankDao.getAll()) {
+//                val data = RankerArrData()
+//
+//                data.rankerId = i.id
+//                data.rankerScore = i.score
+//
+//                rankerArr.add(data)
+//            }
+//
+//        }.start()
     }
 }

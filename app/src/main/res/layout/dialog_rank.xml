@@ -1,11 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    android:id="@+id/dg_cl"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:background="@color/black_tran">-->
+
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/dg_rl"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/dialog_bg"
-    android:translationY="200dp">
+    android:translationY="200dp"
+    android:background="@drawable/dialog_bg">
 
     <LinearLayout
         android:id="@+id/dg_ll_rank"
@@ -155,4 +162,4 @@
 
     </LinearLayout>
 
-</RelativeLayout>
+</RelativeLayout><!--</androidx.constraintlayout.widget.ConstraintLayout>-->

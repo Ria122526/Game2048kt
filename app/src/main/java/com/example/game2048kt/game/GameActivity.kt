@@ -11,14 +11,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.room.Room
 import com.example.game2048kt.R
 import com.example.game2048kt.TheModeEnum
 import com.example.game2048kt.TheModeEnum.Companion.getEnum
 import com.example.game2048kt.game.GameSizeMoveData.gameSize
 import com.example.game2048kt.game.GameSizeMoveData.isMoved
-import com.example.game2048kt.roomDataBase.RankData
-import com.example.game2048kt.roomDataBase.RankDataBase
 import com.example.game2048kt.tools.ConvertToPixel
 import java.util.*
 import kotlin.math.abs
@@ -170,7 +167,6 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
         )
     }
 
-
     // 尋找是否有為0的數字
     private fun checkZeroLocation(): Boolean {
 
@@ -281,28 +277,28 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
 
     private fun saveRankData() {
         // 建立資料庫物件
-        val dataBase =
-            Room.databaseBuilder(applicationContext, RankDataBase::class.java, "Rank").build()
-
-        // 建立DAO
-        val rankDao = dataBase.dataDao()
-        Thread {
-            var inputId = "HAPPY666"
-            var isFinding = false
-            for (i in rankDao.getAll()) {
-                if (i.id == inputId) {
-                    isFinding = true
-                    break
-                }
-            }
-
-            if (isFinding) {
-                rankDao.update(RankData("HAPPY666", 88888))
-            } else {
-                rankDao.insert(RankData("HAPPY666", 666))
-            }
-
-        }.start()
+//        val dataBase =
+//            Room.databaseBuilder(applicationContext, RankDataBase::class.java, "Rank").build()
+//
+//        // 建立DAO
+//        val rankDao = dataBase.dataDao()
+//        Thread {
+//            var inputId = "HAPPY666"
+//            var isFinding = false
+//            for (i in rankDao.getAll()) {
+//                if (i.id == inputId) {
+//                    isFinding = true
+//                    break
+//                }
+//            }
+//
+//            if (isFinding) {
+//                rankDao.update(RankData("HAPPY666", 88888))
+//            } else {
+//                rankDao.insert(RankData("HAPPY666", 666))
+//            }
+//
+//        }.start()
     }
 
     private fun writeData() {}

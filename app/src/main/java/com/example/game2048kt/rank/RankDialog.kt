@@ -8,11 +8,8 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.game2048kt.R
 import com.example.game2048kt.TheModeEnum
-import com.example.game2048kt.main.MainActivity
-import com.example.game2048kt.tools.ConvertToPixel
 
 class RankDialog(context: Context) : Dialog(context, R.style.RankDialogCustom),
     View.OnClickListener, View.OnTouchListener {
@@ -31,9 +28,6 @@ class RankDialog(context: Context) : Dialog(context, R.style.RankDialogCustom),
         super.onCreate(savedInstanceState)
         setContentView(LayoutInflater.from(context).inflate(R.layout.dialog_rank, null))
 
-        // 設計縮回動畫
-        window?.setWindowAnimations(R.style.DialogCustomOutAni)
-
         initViews()
     }
 
@@ -51,7 +45,7 @@ class RankDialog(context: Context) : Dialog(context, R.style.RankDialogCustom),
         llItem5x5.setOnClickListener(this)
         llItem6x6.setOnClickListener(this)
         llItem8x8.setOnClickListener(this)
-        rlDialog.setOnTouchListener(this)
+        window?.decorView?.setOnTouchListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -67,19 +61,30 @@ class RankDialog(context: Context) : Dialog(context, R.style.RankDialogCustom),
     }
 
     override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+
+        val height = window?.decorView?.height
+
         when (event?.action) {
-            MotionEvent.ACTION_DOWN -> gestureStartY = event.y
+            MotionEvent.ACTION_DOWN -> if (event.y > (height!! * 0.3f)) gestureStartY = event.y
             MotionEvent.ACTION_MOVE -> {
-                gestureMoveY = event.y - gestureStartY
-                window?.decorView?.scrollBy(0, -(gestureMoveY.toInt()))
-                gestureStartY = event.y
+
+                rlDialog.translationY = event.y
             }
             MotionEvent.ACTION_UP -> {
-                if (gestureMoveY > 0)
-                    cancel()
-                else if (gestureMoveY < 0)
-                    rlDialog.translationY =
-                        (ConvertToPixel.convertDpToPixel(200f, this@RankDialog.context))
+                if (gestureMoveY > 0) {
+
+                    // 設計縮回動畫
+//                    rlDialog.startAnimation(
+//                        loadAnimation(
+//                            this@RankDialog.context, R.anim.dialog_out
+//                        )
+//                    )
+//                    cancel()
+                }
+
+//                else if (gestureMoveY < 0)
+//                    rlDialog.translationY =
+//                        (ConvertToPixel.convertDpToPixel(200f, this@RankDialog.context))
             }
         }
         return true
