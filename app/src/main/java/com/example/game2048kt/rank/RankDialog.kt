@@ -6,10 +6,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import com.example.game2048kt.R
 import com.example.game2048kt.TheModeEnum
+import com.example.game2048kt.tools.ConvertToPixel
+import java.util.*
 
 class RankDialog(context: Context) : Dialog(context, R.style.RankDialogCustom),
     View.OnClickListener, View.OnTouchListener {
@@ -29,6 +32,7 @@ class RankDialog(context: Context) : Dialog(context, R.style.RankDialogCustom),
         setContentView(LayoutInflater.from(context).inflate(R.layout.dialog_rank, null))
 
         initViews()
+//        window?.setWindowAnimations(R.style.DialogCustomOutAni)
     }
 
     private fun initViews() {
@@ -69,22 +73,32 @@ class RankDialog(context: Context) : Dialog(context, R.style.RankDialogCustom),
             MotionEvent.ACTION_MOVE -> {
 
                 rlDialog.translationY = event.y
+
+                gestureMoveY = gestureStartY - event.y
             }
             MotionEvent.ACTION_UP -> {
-                if (gestureMoveY > 0) {
+
+                if (gestureMoveY < 0) {
 
                     // 設計縮回動畫
-//                    rlDialog.startAnimation(
-//                        loadAnimation(
-//                            this@RankDialog.context, R.anim.dialog_out
-//                        )
-//                    )
-//                    cancel()
-                }
+                    rlDialog.startAnimation(
+                        AnimationUtils.loadAnimation(
+                            this@RankDialog.context,
+                            R.anim.dialog_out
+                        )
+                    )
 
-//                else if (gestureMoveY < 0)
-//                    rlDialog.translationY =
-//                        (ConvertToPixel.convertDpToPixel(200f, this@RankDialog.context))
+                    rlDialog.postDelayed({
+                        cancel()
+                    }, 400)
+
+//                    Timer("SettingUp", false).schedule(300) {
+//                        cancel()
+//                    }.scheduledExecutionTime()
+
+                } else if (gestureMoveY > 0)
+                    rlDialog.translationY =
+                        (ConvertToPixel.convertDpToPixel(0f, this@RankDialog.context))
             }
         }
         return true
