@@ -1,20 +1,23 @@
 package com.example.game2048kt.roomDataBase
 
-import androidx.room.Dao
+import androidx.room.*
 
 // 定義資料操作方式
 @Dao
 interface RankDataUao {
-//    // 取得所有Rank資料紀錄，依照分數作排序
-//    @Query("SELECT * FROM rank order by score desc")
-//    fun getAll(): List<RankData>
-//
-//    @Insert
-//    fun insert(item: RankData)
-//
-//    @Update
-//    fun update(item: RankData)
-//
-//    @Delete
-//    fun delete(item: RankData)
+
+    @Query("SELECT * FROM rank")
+    fun getAll(): List<RankData>
+
+    @Query("SELECT * FROM rank")
+    fun getFour(): List<RankData>
+
+    @Insert
+    fun insert(item: RankData)
+
+    @Update
+    fun update(item: RankData)
+
+    @Delete
+    fun delete(item: RankData)
 }

@@ -4,32 +4,23 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "THREE_THREE")
-data class RankData3x3(
-    @PrimaryKey val id: String = "",
-    @ColumnInfo(name = "score") val score: Int = 0,
+@Entity(tableName = "Rank")
+data class RankData(
+    @PrimaryKey val id: String = "NoName",
+    @ColumnInfo(name = "THREE_THREE") val score3: Int = 0,
+    @ColumnInfo(name = "FOUR_FOUR") val score4: Int = 0,
+    @ColumnInfo(name = "FIVE_FIVE") val score5: Int = 0,
+    @ColumnInfo(name = "SIX_SIX") val score6: Int = 0,
+    @ColumnInfo(name = "EIGHT_EIGHT") val score8: Int = 0,
 )
 
-@Entity(tableName = "FOUR_FOUR")
-data class RankData4x4(
-    @PrimaryKey val id: String = "",
-    @ColumnInfo(name = "score") val score: Int = 0,
-)
-
-@Entity(tableName = "FIVE_FIVE")
-data class RankData5x5(
-    @PrimaryKey val id: String = "",
-    @ColumnInfo(name = "score") val score: Int = 0,
-)
-
-@Entity(tableName = "SIX_SIX")
-data class RankData6x6(
-    @PrimaryKey val id: String = "",
-    @ColumnInfo(name = "score") val score: Int = 0,
-)
-
-@Entity(tableName = "EIGHT_EIGHT")
-data class RankData8x8(
-    @PrimaryKey val id: String = "",
-    @ColumnInfo(name = "score") val score: Int = 0,
-)
+fun createRankData(mode: Int, id: String, score: Int): RankData {
+    return when (mode) {
+        3 -> RankData(id, score3 = score)
+        4 -> RankData(id, score4 = score)
+        5 -> RankData(id, score5 = score)
+        6 -> RankData(id, score6 = score)
+        8 -> RankData(id, score8 = score)
+        else -> RankData("NoName", score)
+    }
+}
