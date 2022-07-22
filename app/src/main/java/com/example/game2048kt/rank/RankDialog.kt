@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
+import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
@@ -71,36 +72,37 @@ class RankDialog(context: Context) : Dialog(context, R.style.RankDialogCustom),
         when (event?.action) {
             MotionEvent.ACTION_DOWN -> if (event.y > (height!! * 0.3f)) gestureStartY = event.y
             MotionEvent.ACTION_MOVE -> {
-
                 rlDialog.translationY = event.y
-
                 gestureMoveY = gestureStartY - event.y
             }
             MotionEvent.ACTION_UP -> {
-
                 if (gestureMoveY < 0) {
-
-                    // 設計縮回動畫
-                    rlDialog.startAnimation(
-                        AnimationUtils.loadAnimation(
-                            this@RankDialog.context,
-                            R.anim.dialog_out
-                        )
-                    )
-
-                    rlDialog.postDelayed({
-                        cancel()
-                    }, 400)
-
-//                    Timer("SettingUp", false).schedule(300) {
-//                        cancel()
-//                    }.scheduledExecutionTime()
-
+                    dialogAnimationAndEnd()
                 } else if (gestureMoveY > 0)
                     rlDialog.translationY =
                         (ConvertToPixel.convertDpToPixel(0f, this@RankDialog.context))
             }
         }
         return true
+    }
+
+    // View縮回動畫與取消
+    private fun dialogAnimationAndEnd() {
+        rlDialog.startAnimation(
+            AnimationUtils.loadAnimation(
+                this@RankDialog.context,
+                R.anim.dialog_out
+            ).apply {
+                this.setAnimationListener(object : Animation.AnimationListener {
+                    override fun onAnimationStart(animation: Animation?) {}
+
+                    override fun onAnimationEnd(animation: Animation?) {
+                        this@RankDialog.cancel()
+                    }
+
+                    override fun onAnimationRepeat(animation: Animation?) {}
+                })
+            }
+        )
     }
 }
