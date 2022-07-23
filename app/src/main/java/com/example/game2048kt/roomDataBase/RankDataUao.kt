@@ -6,11 +6,8 @@ import androidx.room.*
 @Dao
 interface RankDataUao {
 
-    @Query("SELECT * FROM rank")
+    @Query("SELECT * FROM rank order by id desc")
     fun getAll(): List<RankData>
-
-    @Query("SELECT * FROM rank")
-    fun getFour(): List<RankData>
 
     @Insert
     fun insert(item: RankData)

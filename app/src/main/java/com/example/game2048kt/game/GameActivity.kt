@@ -17,9 +17,9 @@ import com.example.game2048kt.TheModeEnum
 import com.example.game2048kt.TheModeEnum.Companion.getEnum
 import com.example.game2048kt.game.GameSizeMoveData.gameSize
 import com.example.game2048kt.game.GameSizeMoveData.isMoved
-import com.example.game2048kt.roomDataBase.RankData
 import com.example.game2048kt.roomDataBase.RankDataBase
 import com.example.game2048kt.tools.ConvertToPixel
+import java.text.DecimalFormat
 import java.util.*
 import kotlin.math.abs
 
@@ -275,6 +275,7 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
     }
 
     override fun onPause() {
+        saveRankData()
         super.onPause()
     }
 
@@ -286,23 +287,23 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
         // 建立DAO
         val rankDao = dataBase.dataDao()
         Thread {
-            var inputId = "HAPPY666"
+            val inputId = "Me"
+            val formatThousandColon = DecimalFormat(",##0")
+            val inputScoreString = formatThousandColon.format(885544)
+
             var isFinding = false
             for (i in rankDao.getAll()) {
-
-                rankDao.insert(RankData("HAPPY666",score4 = 66448877))
-
-//                if (i.id == inputId) {
-//                    isFinding = true
-//                    break
-//                }
+                if (i.id == inputId) {
+                    isFinding = true
+                    break
+                }
             }
 
-            if (isFinding) {
-                rankDao.update(RankData("HAPPY666", 88888))
-            } else {
-//                rankDao.insert3("HAPPY666", 666)
-            }
+//            if (isFinding) {
+//                rankDao.update(createRankData(mode,inputId, formatThousandColon.format("1215444")))
+//            } else {
+//                rankDao.insert(createRankData(mode, inputId, inputScoreString))
+//            }
 
         }.start()
     }
