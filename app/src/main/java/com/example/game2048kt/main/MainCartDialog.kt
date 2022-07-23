@@ -21,7 +21,6 @@ class MainCartDialog(context: Context) : AlertDialog(context) {
         setContentView(LayoutInflater.from(context).inflate(R.layout.dialog_cart, null))
         setCanceledOnTouchOutside(true)
 
-
         viewInit()
         initClicks()
     }

@@ -77,9 +77,7 @@ class GameToWhere(
                 coorsArr[i][y] = takeX[returnIndex] + takeX[returnIndex + 1]
                 gameSaveData.score = gameSaveData.score + coorsArr[i][y]
                 returnIndex++
-            } else {
-                coorsArr[i][y] = takeX[returnIndex]
-            }
+            } else coorsArr[i][y] = takeX[returnIndex]
             returnIndex++
         }
     }
@@ -139,9 +137,7 @@ class GameToWhere(
                 coorsArr[x][i] = takeX[returnIndex] + takeX[returnIndex + 1]
                 gameSaveData.score = gameSaveData.score + coorsArr[x][i]
                 returnIndex++
-            } else {
-                coorsArr[x][i] = takeX[returnIndex]
-            }
+            } else coorsArr[x][i] = takeX[returnIndex]
             returnIndex++
         }
     }

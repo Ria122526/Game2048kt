@@ -33,7 +33,6 @@ class RankDialog(context: Context) : Dialog(context, R.style.RankDialogCustom),
         setContentView(LayoutInflater.from(context).inflate(R.layout.dialog_rank, null))
 
         initViews()
-//        window?.setWindowAnimations(R.style.DialogCustomOutAni)
     }
 
     private fun initViews() {
@@ -93,13 +92,12 @@ class RankDialog(context: Context) : Dialog(context, R.style.RankDialogCustom),
                 this@RankDialog.context,
                 R.anim.dialog_out
             ).apply {
-                this.setAnimationListener(object : Animation.AnimationListener {
-                    override fun onAnimationStart(animation: Animation?) {}
+                setAnimationListener(object : Animation.AnimationListener {
 
+                    override fun onAnimationStart(animation: Animation?) {}
                     override fun onAnimationEnd(animation: Animation?) {
                         this@RankDialog.cancel()
                     }
-
                     override fun onAnimationRepeat(animation: Animation?) {}
                 })
             }

@@ -12,13 +12,17 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.room.Room
+import com.example.game2048kt.GameEndDialogSendId
 import com.example.game2048kt.R
 import com.example.game2048kt.TheModeEnum
 import com.example.game2048kt.TheModeEnum.Companion.getEnum
 import com.example.game2048kt.game.GameSizeMoveData.gameSize
 import com.example.game2048kt.game.GameSizeMoveData.isMoved
 import com.example.game2048kt.roomDataBase.RankDataBase
+import com.example.game2048kt.roomDataBase.RankDataUao
+import com.example.game2048kt.roomDataBase.createRankData
 import com.example.game2048kt.tools.ConvertToPixel
+import com.google.gson.Gson
 import java.text.DecimalFormat
 import java.util.*
 import kotlin.math.abs
@@ -35,6 +39,7 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
     private lateinit var clGame: ConstraintLayout
     private lateinit var tvScore: TextView
     private lateinit var tvHighScore: TextView
+    private lateinit var tvEnd: TextView
     private lateinit var ivShare: ImageView
     private lateinit var ivUndo: ImageView
     private lateinit var ivRestart: ImageView
@@ -54,6 +59,12 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
     // 儲存的資料
     private var gameSaveData = GameSaveData()
 
+    // 建立排行榜資料庫物件
+    private var dataBase: RankDataBase? = null
+
+    // 排行榜資料庫DAO
+    private var rankDao: RankDataUao? = null
+
     // 與手勢相關，mPos起始位置、gesture手勢結果
     private var mPosX: Float = 0f
     private var mPosY: Float = 0f
@@ -71,16 +82,23 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
     private var randX: Int = 0
     private var randY: Int = 0
 
+    val gson = Gson()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
+        dataBase =
+            Room.databaseBuilder(applicationContext, RankDataBase::class.java, "Rank").build()
+        rankDao = dataBase?.dataDao()
 
         modeSetting()
         arraySizeSetting()
         initView()
         initClicks()
         gameCardsViewAdding()
-        restart()
+
+//        restart()
+        getSaveGameBack()
     }
 
     // 載入view
@@ -88,6 +106,7 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
         clGame = findViewById(R.id.game_cl)
         tvScore = findViewById(R.id.game_tv_score)
         tvHighScore = findViewById(R.id.game_tv_high_score)
+        tvEnd = findViewById(R.id.game_end)
         ivShare = findViewById(R.id.game_iv_share)
         ivUndo = findViewById(R.id.game_iv_undo)
         ivRestart = findViewById(R.id.game_iv_restart)
@@ -118,7 +137,14 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
         // 顯示的分數歸零
         tvScore.text = "${gameSaveData.score}"
         // 顯示的重新按鈕變回原本的樣式
-        ivRestart.setImageResource(R.drawable.ic_baseline_cached_24)
+        ivRestart.setBackgroundResource(R.drawable.ib_inform_cards)
+
+        // 恢復可動
+        ivUndo.isEnabled = true
+        clGame.isEnabled = true
+
+        // 遮片隱藏
+        tvEnd.visibility = View.INVISIBLE
 
         randAddNewNumber()
         randAddNewNumber()
@@ -134,7 +160,10 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
         }
 
         gameSaveData.score = lastMoveScore
+        gameSaveData.highScore = lastMoveHighScore
+
         tvScore.text = "${gameSaveData.score}"
+        tvHighScore.text = "${gameSaveData.highScore}"
     }
 
     // 分享文本至其他應用程式
@@ -148,6 +177,7 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
 
     // 隨機找到可生成的位置並給予數字2、4
     private fun randAddNewNumber() {
+
         // 當其中有0的空格就可以生成
         while (checkZeroLocation()) {
             // 隨機生成座標
@@ -161,6 +191,9 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
         val randomWeight = (Math.random() * 100).toInt()
         if (randomWeight < 95) gameSaveData.coorsArr[randX][randY] = 2
         else gameSaveData.coorsArr[randX][randY] = 2
+
+//        // 禁止上一步
+//        ivUndo.isEnabled = false
     }
 
     // 每次生成的動畫
@@ -174,9 +207,12 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
     private fun checkZeroLocation(): Boolean {
 
         for (i in 0 until gameSize) {
-            return gameSaveData.coorsArr[i].contains(0)
+            for (j in 0 until gameSize) {
+                if (gameSaveData.coorsArr[i][j] == 0) {
+                    return true
+                }
+            }
         }
-
         return false
     }
 
@@ -264,51 +300,12 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
                 gridLayoutParams.width =
                     ConvertToPixel.convertDpToPixel(cardSize, this@GameActivity).toInt()
 
-                println(gridLayoutParams.height)
-                println(gridLayoutParams.width)
-
                 gridLayoutParams.setMargins(MAR, MAR, MAR, MAR)
 
                 gameGridLayout.addView(cardBg[i][j], gridLayoutParams)
             }
         }
     }
-
-    override fun onPause() {
-        saveRankData()
-        super.onPause()
-    }
-
-    private fun saveRankData() {
-        // 建立資料庫物件
-        val dataBase =
-            Room.databaseBuilder(applicationContext, RankDataBase::class.java, "Rank").build()
-
-        // 建立DAO
-        val rankDao = dataBase.dataDao()
-        Thread {
-            val inputId = "Me"
-            val formatThousandColon = DecimalFormat(",##0")
-            val inputScoreString = formatThousandColon.format(885544)
-
-            var isFinding = false
-            for (i in rankDao.getAll()) {
-                if (i.id == inputId) {
-                    isFinding = true
-                    break
-                }
-            }
-
-//            if (isFinding) {
-//                rankDao.update(createRankData(mode,inputId, formatThousandColon.format("1215444")))
-//            } else {
-//                rankDao.insert(createRankData(mode, inputId, inputScoreString))
-//            }
-
-        }.start()
-    }
-
-    private fun writeData() {}
 
     override fun onTouch(v: View?, event: MotionEvent?): Boolean {
         when (event?.action) {
@@ -330,7 +327,6 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
                 // 如果手勢後發生了移動
                 if (isMoved) {
 
-                    // todo 弄清楚這個東西到底是在想啥....?
                     for (i in 0 until gameSize) {
                         lastStep[i] = gameSaveData.moveArr[i].copyOf()
                     }
@@ -354,6 +350,9 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
 
     // 移動前需要暫存，保存上一步
     private fun saveLastStep() {
+
+//        // 保存後即可以做上一步
+//        ivUndo.isEnabled = true
 
         // 取得移動前的分數與高分
         lastMoveScore = gameSaveData.score
@@ -394,6 +393,7 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
 
         // 其餘的更新分數
         tvScore.text = "${gameSaveData.score}"
+        tvHighScore.text = "${gameSaveData.highScore}"
     }
 
     // 判斷遊戲是否結束
@@ -419,5 +419,68 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
         clGame.isEnabled = false
 
         // todo 遊戲結束時的遮片
+        tvEnd.visibility = View.VISIBLE
+
+        gameEndRecord()
+    }
+
+    // 遊戲結束時彈出輸入ID的視窗
+    private fun gameEndRecord() {
+        val gameEndRecordDialog = GameEndDialog(this@GameActivity)
+        gameEndRecordDialog.show()
+        gameEndRecordDialog.sendId = object : GameEndDialogSendId {
+            override fun send(id: String) {
+                saveRankData(id, gameSaveData.score.toString())
+            }
+        }
+    }
+
+    // 儲存成績資料
+    private fun saveRankData(inputId: String, inputScoreString: String) {
+        Thread {
+            val formatThousandColon = DecimalFormat(",##0")
+
+            var isFinding = false
+            for (i in rankDao!!.getAll()) {
+                if (i.id == inputId) {
+                    isFinding = true
+                    break
+                }
+            }
+
+            if (isFinding) {
+                rankDao?.update(createRankData(mode, inputId, formatThousandColon.format(1215444)))
+            } else {
+                rankDao?.insert(createRankData(mode, inputId, inputScoreString))
+            }
+        }.start()
+    }
+
+    override fun onPause() {
+        saveGameData()
+        super.onPause()
+    }
+
+    private fun saveGameData() {
+        val sharedPreferences = getSharedPreferences("2048", MODE_PRIVATE)
+        val saveString = gson.toJson(gameSaveData)
+
+        sharedPreferences.edit().putString(mode?.key, saveString).apply()
+    }
+
+    private fun getSaveGameBack() {
+        val sharedPreferences = getSharedPreferences("2048", MODE_PRIVATE)
+        val returnString = sharedPreferences.getString(mode?.key, "0")
+
+        if (returnString.equals("0")){
+            restart()
+        }else{
+            gameSaveData = gson.fromJson(returnString, GameSaveData::class.java)
+            updateGameViews()
+        }
+
+        // 復原分數
+        tvScore.text = gameSaveData.score.toString()
+        tvHighScore.text = gameSaveData.highScore.toString()
     }
 }
