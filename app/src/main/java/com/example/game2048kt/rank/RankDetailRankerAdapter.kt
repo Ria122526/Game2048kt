@@ -7,8 +7,9 @@ import android.widget.TextView
 import androidx.constraintlayout.utils.widget.ImageFilterView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.game2048kt.R
+import java.text.DecimalFormat
 
-class RankDetailRankerAdapter(rankerArr: ArrayList<RankerArrData>) :
+class RankDetailRankerAdapter(rankerArr: ArrayList<RankArrData>) :
     RecyclerView.Adapter<RankDetailRankerAdapter.ViewHolder>() {
 
     private var rankerArr = rankerArr
@@ -29,12 +30,16 @@ class RankDetailRankerAdapter(rankerArr: ArrayList<RankerArrData>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val rank = position + 1
-        holder.tvRankerId.text = rankerArr[position].rankerId
-        holder.tvRankerScore.text = "分數：${rankerArr[position].rankerScore}"
+        holder.tvRankerId.text = rankerArr[position].id
+        holder.tvRankerScore.text = "分數：${formatScore(rankerArr[position].score)}"
         holder.tvRankerRank.text = "第 $rank 名"
     }
 
     override fun getItemCount(): Int {
         return rankerArr.size
+    }
+
+    fun formatScore(inputScore: Int): String {
+        return DecimalFormat(",##0").format(inputScore)
     }
 }

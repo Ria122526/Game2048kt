@@ -20,10 +20,9 @@ import com.example.game2048kt.game.GameSizeMoveData.gameSize
 import com.example.game2048kt.game.GameSizeMoveData.isMoved
 import com.example.game2048kt.roomDataBase.RankDataBase
 import com.example.game2048kt.roomDataBase.RankDataUao
-import com.example.game2048kt.roomDataBase.createRankData
+import com.example.game2048kt.roomDataBase.chooseRankData
 import com.example.game2048kt.tools.ConvertToPixel
 import com.google.gson.Gson
-import java.text.DecimalFormat
 import java.util.*
 import kotlin.math.abs
 
@@ -433,7 +432,7 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
             it.show()
             it.sendId = object : GameEndDialogSendId {
                 override fun send(id: String) {
-                    saveRankData(id, gameSaveData.score.toString())
+                    saveRankData(id, gameSaveData.score)
                     it.cancel()
                 }
             }
@@ -441,9 +440,8 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
     }
 
     // 儲存成績資料
-    private fun saveRankData(inputId: String, inputScoreString: String) {
+    private fun saveRankData(inputId: String, inputScore: Int) {
         Thread {
-            val formatThousandColon = DecimalFormat(",##0")
 
             var isFinding = false
             for (i in rankDao!!.getAll()) {
@@ -454,9 +452,9 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
             }
 
             if (isFinding) {
-                rankDao?.update(createRankData(mode, inputId, formatThousandColon.format(1215444)))
+                rankDao?.update(chooseRankData(mode, inputId, inputScore))
             } else {
-                rankDao?.insert(createRankData(mode, inputId, inputScoreString))
+                rankDao?.insert(chooseRankData(mode, inputId, inputScore))
             }
         }.start()
     }

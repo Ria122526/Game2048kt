@@ -12,8 +12,12 @@ import android.widget.TextView
 import androidx.constraintlayout.utils.widget.ImageFilterView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
 import com.example.game2048kt.R
 import com.example.game2048kt.TheModeEnum
+import com.example.game2048kt.roomDataBase.RankDataBase
+import java.util.*
+import kotlin.collections.ArrayList
 
 class RankDetailDialog(context: Context) :
     Dialog(context, android.R.style.Theme_Light_NoTitleBar_Fullscreen) {
@@ -30,7 +34,7 @@ class RankDetailDialog(context: Context) :
     private lateinit var rvDetailRanker: RecyclerView
 
     //排行榜資料
-    private var rankerArr = ArrayList<RankerArrData>()
+    private var rankerArr = ArrayList<RankArrData>()
     private val rankDetailRankerAdapter = RankDetailRankerAdapter(rankerArr)
 
     init {
@@ -54,7 +58,6 @@ class RankDetailDialog(context: Context) :
         tvGameTitle = findViewById(R.id.rank_detail_tv_game_title)
         swAllSwitchFriend = findViewById(R.id.rank_detail_sw)
 
-
         // 設定排行榜的recyclerView
         rvDetailRanker = findViewById(R.id.rank_detail_rv)
         rvDetailRanker.setHasFixedSize(true)
@@ -69,32 +72,37 @@ class RankDetailDialog(context: Context) :
     }
 
     fun modeReceived(mode: TheModeEnum) {
-        writeRankData()
+        writeRankData(mode)
         tvGameTitle.text = mode.key
     }
 
-    private fun writeRankData() {
+    private fun writeRankData(mode: TheModeEnum) {
         // 建立資料庫物件
-//        val rankDataBase = Room.databaseBuilder(
-//            this@RankDetailDialog.context,
-//            RankDataBase::class.java,
-//            "Rank"
-//        ).build()
+        val rankDataBase = Room.databaseBuilder(
+            this@RankDetailDialog.context,
+            RankDataBase::class.java,
+            "Rank"
+        ).build()
 
         // 取得DAO
-//        val rankDao = rankDataBase.dataDao()
+        val rankDao = rankDataBase.dataDao()
 
-//        Thread {
-//
-//            for (i in rankDao.getAll()) {
-//                val data = RankerArrData()
-//
-//                data.rankerId = i.id
-//                data.rankerScore = i.score
-//
-//                rankerArr.add(data)
-//            }
-//
-//        }.start()
+        Thread {
+
+            rankerArr.clear()
+
+            for (i in rankDao.getAll()) {
+                when (mode) {
+                    TheModeEnum.THREE_THREE -> rankerArr.add(RankArrData(i.id, i.score3))
+                    TheModeEnum.FOUR_FOUR -> rankerArr.add(RankArrData(i.id, i.score4))
+                    TheModeEnum.FIVE_FIVE -> rankerArr.add(RankArrData(i.id, i.score5))
+                    TheModeEnum.SIX_SIX -> rankerArr.add(RankArrData(i.id, i.score6))
+                    TheModeEnum.EIGHT_EIGHT -> rankerArr.add(RankArrData(i.id, i.score8))
+                }
+            }
+
+            rankerArr.sortByDescending { it.score }
+
+        }.start()
     }
 }
