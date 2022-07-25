@@ -106,10 +106,11 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
         clGame = findViewById(R.id.game_cl)
         tvScore = findViewById(R.id.game_tv_score)
         tvHighScore = findViewById(R.id.game_tv_high_score)
-        tvEnd = findViewById(R.id.game_end)
         ivShare = findViewById(R.id.game_iv_share)
         ivUndo = findViewById(R.id.game_iv_undo)
         ivRestart = findViewById(R.id.game_iv_restart)
+
+        tvEnd = findViewById(R.id.game_end)
 
         clGame.setOnTouchListener(this)
     }
@@ -145,6 +146,7 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
 
         // 遮片隱藏
         tvEnd.visibility = View.INVISIBLE
+        gameSaveData.endGameTvVisibility = View.INVISIBLE
 
         randAddNewNumber()
         randAddNewNumber()
@@ -420,17 +422,20 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
 
         // todo 遊戲結束時的遮片
         tvEnd.visibility = View.VISIBLE
+        gameSaveData.endGameTvVisibility = View.VISIBLE
 
         gameEndRecord()
     }
 
     // 遊戲結束時彈出輸入ID的視窗
     private fun gameEndRecord() {
-        val gameEndRecordDialog = GameEndDialog(this@GameActivity)
-        gameEndRecordDialog.show()
-        gameEndRecordDialog.sendId = object : GameEndDialogSendId {
-            override fun send(id: String) {
-                saveRankData(id, gameSaveData.score.toString())
+        GameEndDialog(this@GameActivity).also {
+            it.show()
+            it.sendId = object : GameEndDialogSendId {
+                override fun send(id: String) {
+                    saveRankData(id, gameSaveData.score.toString())
+                    it.cancel()
+                }
             }
         }
     }
@@ -461,6 +466,7 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
         super.onPause()
     }
 
+    // 使用簡單的sharePreference紀錄遊戲畫面
     private fun saveGameData() {
         val sharedPreferences = getSharedPreferences("2048", MODE_PRIVATE)
         val saveString = gson.toJson(gameSaveData)
@@ -468,13 +474,14 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
         sharedPreferences.edit().putString(mode?.key, saveString).apply()
     }
 
+    // 從sharePreference取回遊戲畫面
     private fun getSaveGameBack() {
         val sharedPreferences = getSharedPreferences("2048", MODE_PRIVATE)
         val returnString = sharedPreferences.getString(mode?.key, "0")
 
-        if (returnString.equals("0")){
+        if (returnString.equals("0")) {
             restart()
-        }else{
+        } else {
             gameSaveData = gson.fromJson(returnString, GameSaveData::class.java)
             updateGameViews()
         }
@@ -482,5 +489,7 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
         // 復原分數
         tvScore.text = gameSaveData.score.toString()
         tvHighScore.text = gameSaveData.highScore.toString()
+        // 復原遮片
+        tvEnd.visibility = gameSaveData.endGameTvVisibility
     }
 }

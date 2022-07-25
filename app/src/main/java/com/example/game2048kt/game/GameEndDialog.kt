@@ -23,10 +23,6 @@ class GameEndDialog(context: Context) : Dialog(context) {
     init {
         setContentView(LayoutInflater.from(context).inflate(R.layout.dialog_game_end_record, null))
         setCanceledOnTouchOutside(false)
-    }
-
-    override fun create() {
-        super.create()
         initViews()
         initClicks()
     }

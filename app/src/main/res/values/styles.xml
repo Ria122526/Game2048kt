@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <style name="RankDialogCustom">
         <!-- 對話框背景：透明 -->
-        <item name="android:background">@color/tran</item>
+        <item name="android:windowBackground">@color/black_tran</item>
+
+
     </style>
 
     <style name="DialogCustomOutAni">

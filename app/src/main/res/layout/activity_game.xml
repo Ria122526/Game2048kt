@@ -130,6 +130,7 @@
         android:background="@color/bg_FCF8EF"
         android:gravity="center"
         android:text="遊戲結束!"
+        android:textColor="@color/title_tx_787469"
         android:textSize="50sp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@id/game_gl"

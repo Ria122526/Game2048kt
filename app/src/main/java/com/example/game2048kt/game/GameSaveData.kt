@@ -10,6 +10,9 @@ class GameSaveData {
 
     var highScore: Int = 0;
 
+    // 遊戲結束時的遮片
+    var endGameTvVisibility: Int = 0
+
     // 遊戲畫面資料，以座標表示該位置的值
     var coorsArr = Array(gameSize) { Array(gameSize) { 0 } }
 
