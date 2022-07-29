@@ -36,6 +36,7 @@ private const val EIGHT = 8
 class GameActivity : AppCompatActivity(), View.OnTouchListener {
 
     private lateinit var clGame: ConstraintLayout
+    private lateinit var glGameAnimation: GridLayout
     private lateinit var tvScore: TextView
     private lateinit var tvHighScore: TextView
     private lateinit var tvEnd: TextView
@@ -96,7 +97,7 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
         initClicks()
         gameCardsViewAdding()
 
-//        restart()
+        restart()
         getSaveGameBack()
     }
 
@@ -108,6 +109,8 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
         ivShare = findViewById(R.id.game_iv_share)
         ivUndo = findViewById(R.id.game_iv_undo)
         ivRestart = findViewById(R.id.game_iv_restart)
+
+        glGameAnimation = findViewById(R.id.game_gl_animation)
 
         tvEnd = findViewById(R.id.game_end)
 
@@ -130,6 +133,7 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
 
     // 重新刷新所有資料
     private fun restart() {
+
         // 將所有資料全部歸零
         gameSaveData.coorsArr = Array(gameSize) { Array(gameSize) { 0 } }
         // 分數歸零
@@ -139,8 +143,9 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
         // 顯示的重新按鈕變回原本的樣式
         ivRestart.setBackgroundResource(R.drawable.ib_inform_cards)
 
+        // 禁止上一步
+        ivUndo.isEnabled = false
         // 恢復可動
-        ivUndo.isEnabled = true
         clGame.isEnabled = true
 
         // 遮片隱藏
@@ -192,9 +197,6 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
         val randomWeight = (Math.random() * 100).toInt()
         if (randomWeight < 95) gameSaveData.coorsArr[randX][randY] = 2
         else gameSaveData.coorsArr[randX][randY] = 2
-
-//        // 禁止上一步
-//        ivUndo.isEnabled = false
     }
 
     // 每次生成的動畫
@@ -280,8 +282,6 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
     // 動態生成遊戲畫面每一格的卡片
     private fun gameCardsViewAdding() {
 
-        val gameGridLayout: GridLayout = findViewById(R.id.game_gl)
-
         for (i in 0 until gameSize) {
             for (j in 0 until gameSize) {
 
@@ -303,7 +303,7 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
 
                 gridLayoutParams.setMargins(MAR, MAR, MAR, MAR)
 
-                gameGridLayout.addView(cardBg[i][j], gridLayoutParams)
+                glGameAnimation.addView(cardBg[i][j], gridLayoutParams)
             }
         }
     }
@@ -352,8 +352,8 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
     // 移動前需要暫存，保存上一步
     private fun saveLastStep() {
 
-//        // 保存後即可以做上一步
-//        ivUndo.isEnabled = true
+        // 保存後即可以做上一步
+        ivUndo.isEnabled = true
 
         // 取得移動前的分數與高分
         lastMoveScore = gameSaveData.score
@@ -490,4 +490,6 @@ class GameActivity : AppCompatActivity(), View.OnTouchListener {
         // 復原遮片
         tvEnd.visibility = gameSaveData.endGameTvVisibility
     }
+
+
 }
